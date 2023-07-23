@@ -75,16 +75,6 @@ header {
     );
 }
 
-.blurred-background {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    backdrop-filter: blur(10px); /* Apply the blur effect */
-    z-index: 1; /* Place the blurred background behind the active card */
-  }
-
 .card.active:after {
     opacity: 1;
     background-size: 120%; /* Vergrößere den Halo-Effekt */
@@ -135,6 +125,47 @@ header {
 .card:hover:after {
     opacity: 1;
 }
+
+/* Single Image  */
+.blurred-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(10px); /* Apply the blur effect */
+    z-index: 1; /* Place the blurred background behind the active card */
+  }
+
+  .enlarged-card-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.8); /* Background color with some transparency */
+    z-index: 999; /* Place the container on top of everything else */
+  }
+  
+  .enlarged-card {
+    width: 500px; /* Adjust the width as needed */
+    height: 700px; /* Adjust the height as needed */
+    background-color: #211799;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 15px;
+    box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.7);
+    cursor: pointer;
+  }
+
+  .no-animation {
+    animation: none !important;
+    /* Any other styles you want to apply to the enlarged card without the animation */
+  }
 
 @keyframes starSparkle {
     0%, 5% {

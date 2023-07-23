@@ -33,17 +33,27 @@ function init() {
   }
 
   function handleCardClick(card) {
-    // Add a class to the clicked card to apply the animation
-    card.classList.add('active');
+    // Create a new div container for the enlarged card
+    const enlargedCardContainer = document.createElement('div');
+    enlargedCardContainer.classList.add('enlarged-card-container');
   
-    // Create a blurred background div and append it to the container
-    const blurredBackground = document.createElement('div');
-    blurredBackground.classList.add('blurred-background');
-    document.querySelector('body').appendChild(blurredBackground);
+    // Clone the clicked card and add it to the new container
+    const enlargedCard = card.cloneNode(true);
+    enlargedCard.classList.add('enlarged-card');
   
-    // Add event listener to remove the enlarged card and blurred background when clicking outside
-    blurredBackground.addEventListener('click', () => {
-      card.classList.remove('active');
-      blurredBackground.remove();
+    // Remove the animation class from the cloned card
+    enlargedCard.classList.remove('active');
+  
+    // Add a new class to the cloned card to disable the animation
+    enlargedCard.classList.add('no-animation');
+  
+    enlargedCardContainer.appendChild(enlargedCard);
+  
+    // Append the new container to the body
+    document.querySelector('body').appendChild(enlargedCardContainer);
+  
+    // Add event listener to remove the enlarged card and container when clicking outside
+    enlargedCardContainer.addEventListener('click', () => {
+      enlargedCardContainer.remove();
     });
   }
