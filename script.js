@@ -17,11 +17,33 @@ function init() {
       // Create and append card elements with background images to the container
       pokemonData.forEach((pokemon) => {
         const card = document.createElement('div');
-        card.classList.add('card');        
+        card.classList.add('card');
         card.style.backgroundImage = `url(${pokemon.images.small})`;
+      
+        // Add event listener to handle the click event
+        card.addEventListener('click', () => {
+          handleCardClick(card);
+        });
+      
         cardsContainer.appendChild(card);
       });
     } catch (error) {
       console.error('Error fetching data:', error);
     }
+  }
+
+  function handleCardClick(card) {
+    // Add a class to the clicked card to apply the animation
+    card.classList.add('active');
+  
+    // Create a blurred background div and append it to the container
+    const blurredBackground = document.createElement('div');
+    blurredBackground.classList.add('blurred-background');
+    document.querySelector('body').appendChild(blurredBackground);
+  
+    // Add event listener to remove the enlarged card and blurred background when clicking outside
+    blurredBackground.addEventListener('click', () => {
+      card.classList.remove('active');
+      blurredBackground.remove();
+    });
   }
