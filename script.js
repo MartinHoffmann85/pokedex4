@@ -55,6 +55,21 @@ function init() {
     statsButton.innerText = 'Stats';
     statsButton.classList.add('stats-button');
     enlargedCardContainer.appendChild(statsButton);
+
+    // Add event listener to the "Stats" button to call openStats() when clicked
+  let statsButtonClicked = false; // Variable to keep track of whether the "Stats" button was clicked
+
+  statsButton.addEventListener('click', () => {
+    if (!statsButtonClicked) {
+      statsButtonClicked = true;
+      openStats();
+
+      // Re-enable the click event after a short delay (e.g., 500ms)
+      setTimeout(() => {
+        statsButtonClicked = false;
+      }, 500);
+    }
+  });
   
     // Position the "Stats" button below the enlarged card
     const cardRect = card.getBoundingClientRect();
@@ -72,4 +87,24 @@ function init() {
         enlargedCardContainer.remove();
       }
     });
+  }
+
+  function openStats() {
+    // Find the content container
+    const contentContainer = document.querySelector('.content');
+  
+    // Remove all existing content (cards)
+    contentContainer.innerHTML = '';
+  
+    // Create a new card element with a blue background
+    const newCard = document.createElement('div');
+    newCard.classList.add('card');
+    newCard.style.backgroundColor = 'blue';
+
+    // Remove the animation classes from the new card
+    newCard.classList.remove('active');
+    newCard.style.animation = 'none';
+  
+    // Append the new card to the content container
+    contentContainer.appendChild(newCard);      
   }

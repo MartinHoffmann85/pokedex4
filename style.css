@@ -20,7 +20,7 @@ header {
   background-color: #4979c9;
 }
 
-/* Content Card */
+/* Content / Card */
 .content {
   position: relative;
   perspective: 1000px;
@@ -36,7 +36,7 @@ header {
   width: 320px;
   height: 446px;
   background-color: #211799;
-  background-image: url(https://images.pokemontcg.io/xy2/12_hires.png);
+  
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
