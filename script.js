@@ -2,24 +2,40 @@ function init() {
   fetchAndDisplayPokemon();
 }
 
+
+
 // Function to fetch Pokemon data from the API and display cards with images
 async function fetchAndDisplayPokemon() {
-  const apiUrl = "https://api.pokemontcg.io/v2/cards";
+  // Überprüfen, ob die Pokemon-Daten bereits im LocalStorage vorhanden sind
+  const pokemonDataInLocalStorage = localStorage.getItem('pokemonData');
 
-  try {
-    const response = await fetch(apiUrl);
-    const data = await response.json();
-    const cardsContainer = document.querySelector(".content");
-
-    // Get the first 10 Pokemon cards from the API response
-    const pokemonData = data.data.slice(0, 10);
-
-    // Create and append card elements with background images to the container
+  if (pokemonDataInLocalStorage) {
+    // Wenn die Daten bereits im LocalStorage vorhanden sind, rufe sie ab und zeige sie an
+    const pokemonData = JSON.parse(pokemonDataInLocalStorage);
+    const cardsContainer = document.querySelector('.content');
     displayPokemonImage(pokemonData, cardsContainer);
-  } catch (error) {
-    console.error("Error fetching data:", error);
+  } else {
+    // Wenn die Daten nicht im LocalStorage vorhanden sind, rufe sie von der API ab
+    const apiUrl = 'https://api.pokemontcg.io/v2/cards';
+  
+    try {
+      const response = await fetch(apiUrl);
+      const data = await response.json();
+      const pokemonData = data.data.slice(0, 10);
+  
+      // Speichere die Pokemon-Daten im LocalStorage
+      localStorage.setItem('pokemonData', JSON.stringify(pokemonData));
+  
+      const cardsContainer = document.querySelector('.content');
+      displayPokemonImage(pokemonData, cardsContainer);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
   }
 }
+
+
+
 
 function displayPokemonImage(pokemonData, cardsContainer) {
   pokemonData.forEach((pokemon) => {
@@ -35,6 +51,8 @@ function displayPokemonImage(pokemonData, cardsContainer) {
     cardsContainer.appendChild(card);
   });
 }
+
+
 
 function handleCardClick(card) {
   // Create a new div container for the enlarged card and stats button
@@ -75,6 +93,8 @@ function handleCardClick(card) {
     }
   });
 
+
+
   // Position the "Stats" button below the enlarged card
   const cardRect = card.getBoundingClientRect();
   const statsButtonTop = cardRect.bottom + 20; // Add some spacing (20px) below the card
@@ -92,6 +112,8 @@ function handleCardClick(card) {
     }
   });
 }
+
+
 
 function openStats() {
   // Find the content container
@@ -122,13 +144,31 @@ function openStats() {
   backButton.addEventListener("click", backButtonHandler);
 }
 
+
+
 function backButtonHandler() {
   // Find the content container
-  const contentContainer = document.querySelector(".content");
+  const contentContainer = document.querySelector('.content');  
+  contentContainer.classList.remove('vh100');
 
   // Remove all existing content (cards)
-  contentContainer.innerHTML = "";
+  contentContainer.innerHTML = '';
 
-  // Fetch and display Pokemon images again
-  fetchAndDisplayPokemon();
+  // Überprüfen, ob die Pokemon-Daten im LocalStorage vorhanden sind
+  const pokemonDataInLocalStorage = localStorage.getItem('pokemonData');
+
+  if (pokemonDataInLocalStorage) {
+    // Wenn die Daten im LocalStorage vorhanden sind, rufe sie ab und zeige sie an
+    const pokemonData = JSON.parse(pokemonDataInLocalStorage);
+    displayPokemonImage(pokemonData, contentContainer);
+  } else {
+    // Wenn die Daten nicht im LocalStorage vorhanden sind, rufe sie von der API ab
+    fetchAndDisplayPokemon();
+  }
+  // Find the content container
+  
 }
+
+
+
+
