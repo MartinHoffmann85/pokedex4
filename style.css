@@ -184,9 +184,21 @@ header {
   margin-left: 100px;
 }
 
+.back-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #4979c9;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  outline: none;
+  margin-left: 100px;
+}
+
 .displayFlex {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .vh100 {
