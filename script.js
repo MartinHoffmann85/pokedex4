@@ -1,6 +1,6 @@
 function init() {
-    fetchAndDisplayPokemon();
-  };
+  fetchAndDisplayPokemon();
+}
   
   // Function to fetch Pokemon data from the API and display cards with images
   async function fetchAndDisplayPokemon() {
@@ -33,9 +33,10 @@ function init() {
   }
 
   function handleCardClick(card) {
-    // Create a new div container for the enlarged card
+    // Create a new div container for the enlarged card and stats button
     const enlargedCardContainer = document.createElement('div');
     enlargedCardContainer.classList.add('enlarged-card-container');
+    enlargedCardContainer.classList.add('displayFlex');
   
     // Clone the clicked card and add it to the new container
     const enlargedCard = card.cloneNode(true);
@@ -49,11 +50,26 @@ function init() {
   
     enlargedCardContainer.appendChild(enlargedCard);
   
+    // Create the "Stats" button and append it to the container
+    const statsButton = document.createElement('button');
+    statsButton.innerText = 'Stats';
+    statsButton.classList.add('stats-button');
+    enlargedCardContainer.appendChild(statsButton);
+  
+    // Position the "Stats" button below the enlarged card
+    const cardRect = card.getBoundingClientRect();
+    const statsButtonTop = cardRect.bottom + 20; // Add some spacing (20px) below the card    
+    statsButton.style.left = '50%';
+    statsButton.style.transform = 'translateX(-50%)';
+    statsButton.style.top = `${statsButtonTop}px`;
+  
     // Append the new container to the body
     document.querySelector('body').appendChild(enlargedCardContainer);
   
     // Add event listener to remove the enlarged card and container when clicking outside
-    enlargedCardContainer.addEventListener('click', () => {
-      enlargedCardContainer.remove();
+    enlargedCardContainer.addEventListener('click', (event) => {
+      if (!enlargedCard.contains(event.target)) {
+        enlargedCardContainer.remove();
+      }
     });
   }

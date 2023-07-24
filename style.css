@@ -1,216 +1,241 @@
 /* Font Family */
 @font-face {
-    font-family: "Heebo-Regular";
-    src: url("./fonts/static/Heebo-Regular.ttf");
+  font-family: "Heebo-Regular";
+  src: url("./fonts/static/Heebo-Regular.ttf");
 }
 
 /* Body */
 body {
-    margin: 0;
-    height: 100vh;
-    font-family: "Heebo-Regular", sans-serif;
-    color: white;
-    background: white;
+  margin: 0;
+  height: 100vh;
+  font-family: "Heebo-Regular", sans-serif;
+  color: white;
+  background: white;
 }
 
 /* Header */
 header {
-    display: flex;
-    justify-content: center;
-    background-color: #4979C9;
+  display: flex;
+  justify-content: center;
+  background-color: #4979c9;
 }
 
 /* Content Card */
 .content {
-    position: relative;    
-    perspective: 1000px;
-    background-image: url(./img/pokemon_background_image2.jpg);
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    text-align: center;
-    padding-top: 40px;
+  position: relative;
+  perspective: 1000px;
+  background-image: url(./img/pokemon_background_image2.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  text-align: center;
+  padding-top: 40px;
 }
 
 .card {
-    width: 320px;
-    height: 446px;
-    background-color: #211799;
-    background-image: url(https://images.pokemontcg.io/xy2/12_hires.png);
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    border-radius: 15px;
-    /* box-shadow: -3px -3px 3px 0 rgba(38, 230, 247, 0.3), 3px 3px 3px 0 rgba(247, 89, 228, 0.3), 0px 0px 6px 2px rgba(255, 231, 89, 0.3), 0px 35px 25px -15px rgba(0, 0, 0, 0.3); */
-    box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.7);
-    position: relative;
-    overflow: hidden;
-    display: inline-block;
-    vertical-align: middle;
-    margin: 20px 10px;    
-    cursor: pointer;
-    /* Animation later */
-    animation: cardTransformRotate 3s ease infinite;
+  width: 320px;
+  height: 446px;
+  background-color: #211799;
+  background-image: url(https://images.pokemontcg.io/xy2/12_hires.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 15px;
+  /* box-shadow: -3px -3px 3px 0 rgba(38, 230, 247, 0.3), 3px 3px 3px 0 rgba(247, 89, 228, 0.3), 0px 0px 6px 2px rgba(255, 231, 89, 0.3), 0px 35px 25px -15px rgba(0, 0, 0, 0.3); */
+  box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.7);
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 20px 10px;
+  cursor: pointer;
+  /* Animation later */
+  animation: cardTransformRotate 3s ease infinite;
 }
 
 .card.active {
-    /* Existing styles for the active card */
-    /* ... */
-    transform: scale(1.2); /* Enlarge the active card */
-    z-index: 2; /* Bring the active card to the front */
-  }
+  /* Existing styles for the active card */
+  /* ... */
+  transform: scale(1.2); /* Enlarge the active card */
+  z-index: 2; /* Bring the active card to the front */
+}
 
 .card.active:before {
-    opacity: 1;
-    animation: none;
-    transition: none;
-    background-image: linear-gradient(
-        115deg,
-        transparent 0%,
-        transparent 20%, /* Anpassung der Verlaufspunkte */
-        rgba(0, 231, 255, 0.9) 40%, /* Anpassung der Verlaufspunkte und Opazität */
-        rgba(255, 0, 231, 0.9) 60%, /* Anpassung der Verlaufspunkte und Opazität */
-        transparent 80%, /* Anpassung der Verlaufspunkte */
-        transparent 100%
-    );
+  opacity: 1;
+  animation: none;
+  transition: none;
+  background-image: linear-gradient(
+    115deg,
+    transparent 0%,
+    transparent 20%,
+    /* Anpassung der Verlaufspunkte */ rgba(0, 231, 255, 0.9) 40%,
+    /* Anpassung der Verlaufspunkte und Opazität */ rgba(255, 0, 231, 0.9) 60%,
+    /* Anpassung der Verlaufspunkte und Opazität */ transparent 80%,
+    /* Anpassung der Verlaufspunkte */ transparent 100%
+  );
 }
 
 .card.active:after {
-    opacity: 1;
-    background-size: 120%; /* Vergrößere den Halo-Effekt */
-    left: -10%; /* Verschiebe den Halo-Effekt nach links */
-    top: -10%; /* Verschiebe den Halo-Effekt nach oben */
+  opacity: 1;
+  background-size: 120%; /* Vergrößere den Halo-Effekt */
+  left: -10%; /* Verschiebe den Halo-Effekt nach links */
+  top: -10%; /* Verschiebe den Halo-Effekt nach oben */
 }
 
 .card:before,
 .card:after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    background-position: 10% 10%;
-    background-repeat: no-repeat;
-    background-size: 200% 200%;
-    mix-blend-mode: color-dodge;
-    opacity: 0.9;
-    z-index: 1;
-    animation: holoGradient 3s ease infinite;
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-position: 10% 10%;
+  background-repeat: no-repeat;
+  background-size: 200% 200%;
+  mix-blend-mode: color-dodge;
+  opacity: 0.9;
+  z-index: 1;
+  animation: holoGradient 3s ease infinite;
 }
 
 .card:after {
-    background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/13471/sparkles.gif");
-    background-size: 180%;
-    mix-blend-mode: color-dodge;
-    opacity: 1;
-    z-index: 2;
-    animation: starSparkle 3s ease infinite;
+  background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/13471/sparkles.gif");
+  background-size: 180%;
+  mix-blend-mode: color-dodge;
+  opacity: 1;
+  z-index: 2;
+  animation: starSparkle 3s ease infinite;
 }
 
 .card:hover:before {
-    opacity: 1;
-    animation: none;
-    background-image: linear-gradient(
-        115deg,
-        transparent 0%,
-        transparent 25%,
-        rgba(0, 231, 255, 0.7) 45%,
-        rgba(255, 0, 231, 0.7) 55%,
-        transparent 70%,
-        transparent 100%
-    );
+  opacity: 1;
+  animation: none;
+  background-image: linear-gradient(
+    115deg,
+    transparent 0%,
+    transparent 25%,
+    rgba(0, 231, 255, 0.7) 45%,
+    rgba(255, 0, 231, 0.7) 55%,
+    transparent 70%,
+    transparent 100%
+  );
 }
 
 .card:hover:after {
-    opacity: 1;
+  opacity: 1;
 }
 
 /* Single Image  */
 .blurred-background {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    backdrop-filter: blur(10px); /* Apply the blur effect */
-    z-index: 1; /* Place the blurred background behind the active card */
-  }
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(10px); /* Apply the blur effect */
+  z-index: 1; /* Place the blurred background behind the active card */
+}
 
-  .enlarged-card-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+.enlarged-card-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(
+    0,
+    0,
+    0,
+    0.8
+  ); /* Background color with some transparency */
+  z-index: 999; /* Place the container on top of everything else */
+}
+
+.enlarged-card {
+  width: 500px; /* Adjust the width as needed */
+  height: 700px; /* Adjust the height as needed */
+  background-color: #211799;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 15px;
+  box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.7);
+  cursor: pointer;
+}
+
+.no-animation {
+  animation: none !important;
+  /* Any other styles you want to apply to the enlarged card without the animation */
+}
+
+.stats-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #4979c9;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  outline: none;
+  margin-left: 100px;
+}
+
+.displayFlex {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(0, 0, 0, 0.8); /* Background color with some transparency */
-    z-index: 999; /* Place the container on top of everything else */
-  }
-  
-  .enlarged-card {
-    width: 500px; /* Adjust the width as needed */
-    height: 700px; /* Adjust the height as needed */
-    background-color: #211799;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    border-radius: 15px;
-    box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.7);
-    cursor: pointer;
-  }
-
-  .no-animation {
-    animation: none !important;
-    /* Any other styles you want to apply to the enlarged card without the animation */
-  }
+    flex-direction: column;
+}
 
 @keyframes starSparkle {
-    0%, 5% {
-        opacity: 0.1;
-    }
-    20% {
-        opacity: 1;
-    }
-    100% {
-        opacity: 0.1;
-    }
+  0%,
+  5% {
+    opacity: 0.1;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.1;
+  }
 }
 
 @keyframes holoGradient {
-    0%, 100% {
-        opacity: 0;
-        background-position: 0% 0%;
-    }
-    8% {
-        opacity: 0;
-    }
-    19% {
-        background-position: 100% 100%;
-        opacity: 0.5;
-    }
-    35% {
-        background-position: 100% 100%;
-    }
-    55% {
-        background-position: 0% 0%;
-        opacity: 0.3;
-    }
-    75% {
-        opacity: 0;
-    }
+  0%,
+  100% {
+    opacity: 0;
+    background-position: 0% 0%;
+  }
+  8% {
+    opacity: 0;
+  }
+  19% {
+    background-position: 100% 100%;
+    opacity: 0.5;
+  }
+  35% {
+    background-position: 100% 100%;
+  }
+  55% {
+    background-position: 0% 0%;
+    opacity: 0.3;
+  }
+  75% {
+    opacity: 0;
+  }
 }
 
 @keyframes cardTransformRotate {
-    0%, 100% {
-        transform: none;
-    }
-    25% {
-        transform: rotateZ(-3deg) rotateX(-7deg) rotateY(6deg);
-    }
-    66% {
-        transform: rotateZ(3deg) rotateX(7deg) rotateY(-6deg);
-    }
+  0%,
+  100% {
+    transform: none;
+  }
+  25% {
+    transform: rotateZ(-3deg) rotateX(-7deg) rotateY(6deg);
+  }
+  66% {
+    transform: rotateZ(3deg) rotateX(7deg) rotateY(-6deg);
+  }
 }
