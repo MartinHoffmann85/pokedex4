@@ -92,13 +92,13 @@ function init() {
   function openStats() {
     // Find the content container
     const contentContainer = document.querySelector('.content');
-  
+    contentContainer.classList.add('vh100');
     // Remove all existing content (cards)
     contentContainer.innerHTML = '';
   
     // Create a new card element with a blue background
     const newCard = document.createElement('div');
-    newCard.classList.add('card');
+    newCard.classList.add('card');    
     newCard.style.backgroundColor = 'blue';
 
     // Remove the animation classes from the new card

@@ -189,6 +189,10 @@ header {
     flex-direction: column;
 }
 
+.vh100 {
+    height: 100vh;
+}
+
 @keyframes starSparkle {
   0%,
   5% {
