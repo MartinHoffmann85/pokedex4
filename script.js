@@ -41,7 +41,7 @@ function displayPokemonImage(pokemonData, cardsContainer) {
   pokemonData.forEach((pokemon) => {
     const card = document.createElement("div");
     card.classList.add("card");
-    card.style.backgroundImage = `url(${pokemon.images.small})`;
+    card.style.backgroundImage = `url(${pokemon.images.large})`;
 
     // Add event listener to handle the click event
     card.addEventListener("click", () => {
