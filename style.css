@@ -51,7 +51,7 @@ header {
   margin: 20px 10px;
   cursor: pointer;
   /* Animation later */
-  animation: cardTransformRotate 3s ease infinite;
+  /* animation: cardTransformRotate 3s ease infinite; */  /* Rotate function call */
 }
 
 .card.active {
@@ -204,6 +204,10 @@ header {
 
 .vh100 {
     height: 100vh;
+}
+
+.colorBlack {
+  color: black;
 }
 
 @keyframes starSparkle {

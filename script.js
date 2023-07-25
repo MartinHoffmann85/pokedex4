@@ -49,6 +49,14 @@ function displayPokemonImage(pokemonData, cardsContainer) {
     });
 
     cardsContainer.appendChild(card);
+
+    // Init Vanilla Tilt for each card after it's created
+    VanillaTilt.init(card, {
+      max: 25,
+      speed: 400,
+      glare: true,
+      "max-glare": 0.5,
+    });
   });
 }
 
@@ -93,8 +101,6 @@ function handleCardClick(card) {
     }
   });
 
-
-
   // Position the "Stats" button below the enlarged card
   const cardRect = card.getBoundingClientRect();
   const statsButtonTop = cardRect.bottom + 20; // Add some spacing (20px) below the card
@@ -122,10 +128,13 @@ function openStats() {
   // Remove all existing content (cards)
   contentContainer.innerHTML = "";
 
-  // Create a new card element with a blue background
+  // Create a new card element with a white background
   const newCard = document.createElement("div");
+  newCard.id = 'newCardID';
   newCard.classList.add("card");
+  newCard.classList.add("colorBlack");
   newCard.style.backgroundColor = "white";
+  
 
   // Remove the animation classes from the new card
   newCard.classList.remove("active");
@@ -133,6 +142,7 @@ function openStats() {
 
   // Append the new card to the content container
   contentContainer.appendChild(newCard);
+  generatePricesHTML(newCard); // Now you can set innerHTML safely
 
   // Create the "back" button and append it to the container
   const backButton = document.createElement("button");
@@ -142,6 +152,13 @@ function openStats() {
 
   // Add event listener to the "Back" button to call backButton() when clicked
   backButton.addEventListener("click", backButtonHandler);
+
+  
+}
+function generatePricesHTML(newCard) {
+  newCard.innerHTML += `
+    Hallo
+  `;
 }
 
 
@@ -168,6 +185,9 @@ function backButtonHandler() {
   // Find the content container
   
 }
+
+
+
 
 
 
