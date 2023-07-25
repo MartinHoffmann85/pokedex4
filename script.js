@@ -41,7 +41,7 @@ function displayPokemonImage(pokemonData, cardsContainer) {
   pokemonData.forEach((pokemon) => {
     const card = document.createElement("div");
     card.classList.add("card");
-    card.style.backgroundImage = `url(${pokemon.images.large})`;
+    card.style.backgroundImage = `url(${pokemon.images.small})`;
 
     // Add event listener to handle the click event
     card.addEventListener("click", () => {
@@ -122,7 +122,7 @@ function openStats() {
   // Remove all existing content (cards)
   contentContainer.innerHTML = "";
 
-  // Create a new card element with a white background
+  // Create a new card element with a blue background
   const newCard = document.createElement("div");
   newCard.classList.add("card");
   newCard.style.backgroundColor = "white";
