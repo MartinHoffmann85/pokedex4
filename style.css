@@ -169,8 +169,7 @@ header {
 }
 
 .no-animation {
-  animation: none !important;
-  /* Any other styles you want to apply to the enlarged card without the animation */
+  animation: none !important;  
 }
 
 .stats-button {
@@ -210,6 +209,8 @@ header {
   color: black;
 }
 
+
+/* Animations */
 @keyframes starSparkle {
   0%,
   5% {
