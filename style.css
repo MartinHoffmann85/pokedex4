@@ -101,7 +101,7 @@ header {
 }
 
 .card:after {
-  background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/13471/sparkles.gif");
+  background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/13471/sparkles.gif");  /* Star Sparkle Efect */
   background-size: 180%;
   mix-blend-mode: color-dodge;
   opacity: 1;
@@ -109,7 +109,7 @@ header {
   animation: starSparkle 3s ease infinite;
 }
 
-.card:hover:before {
+.card:hover:before {  /* Hologramm Efect Efect */
   opacity: 1;
   animation: none;
   background-image: linear-gradient(
@@ -127,7 +127,7 @@ header {
   opacity: 1;
 }
 
-/* Single Image  */
+/* At Single Image  */
 .blurred-background {
   position: fixed;
   top: 0;
