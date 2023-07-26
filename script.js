@@ -140,10 +140,46 @@ function generatePricesHTML(newCard, prices) {
     <p>High: $${prices.high}</p>
     <p>Market: $${prices.market}</p>
   `;
-  
+
   if (prices.directLow !== null) {
     newCard.innerHTML += `<p>Direct Low: $${prices.directLow}</p>`;
   }
+
+  // Erstelle ein Canvas-Element für das Balkendiagramm
+  const canvas = document.createElement('canvas');
+  canvas.width = 400; // Breite des Diagramms (kann angepasst werden)
+  canvas.height = 200; // Höhe des Diagramms (kann angepasst werden)
+  newCard.appendChild(canvas);
+
+  // Daten für das Balkendiagramm
+  const chartData = {
+    labels: ['Low', 'Mid', 'High', 'Market'],
+    datasets: [
+      {
+        label: 'Prices',
+        data: [prices.low, prices.mid, prices.high, prices.market],
+        backgroundColor: ['rgba(255, 99, 132, 0.5)', 'rgba(54, 162, 235, 0.5)', 'rgba(255, 206, 86, 0.5)', 'rgba(75, 192, 192, 0.5)'],
+        borderColor: ['rgb(255, 99, 132)', 'rgb(54, 162, 235)', 'rgb(255, 206, 86)', 'rgb(75, 192, 192)'],
+        borderWidth: 1
+      }
+    ]
+  };
+
+  // Optionen für das Balkendiagramm
+  const chartOptions = {
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    }
+  };
+
+  // Erstelle das Balkendiagramm
+  new Chart(canvas, {
+    type: 'bar',
+    data: chartData,
+    options: chartOptions
+  });
 }
 
 
