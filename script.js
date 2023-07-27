@@ -181,11 +181,12 @@ async function fetchAndDisplayPrices(id, newCard) {
       localStorage.setItem('pokemonPrices', JSON.stringify(prices));
       console.log('Prices fetched and saved:', prices);
       generatePricesHTML(newCard, prices);
-    } else {
-      console.error('Error: Prices not found in API response');
+    } else {      
+      newCard.innerHTML = "<p>Prices not available for this Pokemon.</p>";  // If prices are not found, display a message in the card
     }
   } catch (error) {
-    console.error('Error fetching prices:', error);
+    console.error('Error fetching prices:', error);  // If an error occurs, display an error message in the card    
+    newCard.innerHTML = "<p>Error fetching prices.</p>";
   }
 }
 
