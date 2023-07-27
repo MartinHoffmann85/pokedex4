@@ -2,6 +2,7 @@ let clickedPokemon = null;  // Define a global variable to store the clicked Pok
 
 
 
+
 function init() {
   fetchAndDisplayPokemonImage();
 }
