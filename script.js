@@ -1,3 +1,5 @@
+let clickedPokemon = null;  // Define a global variable to store the clicked Pokemon ID
+
 function init() {
   fetchAndDisplayPokemonImage();
 }
@@ -27,12 +29,13 @@ function displayPokemonImage(pokemonData, cardsContainer) {
   pokemonData.forEach((pokemon) => {
     const card = document.createElement("div");
     card.classList.add("card");
-    card.style.backgroundImage = `url(${pokemon.images.large})`;    
-    card.addEventListener("click", () => {  // Add event listener to handle the click event
+    card.style.backgroundImage = `url(${pokemon.images.large})`;  
+    card.dataset.pokemonId = pokemon.id; // Add the Pokemon ID to the card's dataset
+    card.addEventListener("click", () => {
       handleCardClick(card);
     });
-    cardsContainer.appendChild(card);    
-    VanillaTilt.init(card, {  // Init Vanilla Tilt for each card after it's created
+    cardsContainer.appendChild(card);
+    VanillaTilt.init(card, {
       max: 25,
       speed: 400,
       glare: true,
@@ -41,46 +44,36 @@ function displayPokemonImage(pokemonData, cardsContainer) {
   });
 }
 
-function handleCardClick(card) {
-  const enlargedCardContainer = document.createElement("div");  // Create a new div container for the enlarged card and stats button
+
+
+function handleCardClick(card) {  
+  clickedPokemon = card.dataset.pokemonId;  // Store the clicked Pokemon ID in the global variable
+  const enlargedCardContainer = document.createElement("div");
   enlargedCardContainer.classList.add("enlarged-card-container");
   enlargedCardContainer.classList.add("displayFlex");
-  
-  const enlargedCard = card.cloneNode(true);  // Clone the clicked card and add it to the new container
-  enlargedCard.classList.add("enlarged-card");  
-  enlargedCard.classList.remove("active");  // Remove the animation class from the cloned card  
-  enlargedCard.classList.add("no-animation");  // Add a new class to the cloned card to disable the animation
+  const enlargedCard = card.cloneNode(true);
+  enlargedCard.classList.add("enlarged-card");
+  enlargedCard.classList.remove("active");
+  enlargedCard.classList.add("no-animation");
   enlargedCardContainer.appendChild(enlargedCard);
-  
-  const statsButton = document.createElement("button");  // Create the "Stats" button and append it to the container
-  statsButton.innerText = "Stats";
-  statsButton.classList.add("stats-button");
-  enlargedCardContainer.appendChild(statsButton);
-  
-  let statsButtonClicked = false; // Variable to keep track of whether the "Stats" button was clicked
-
-  statsButton.addEventListener("click", () => {  // Add event listener to the "Stats" button to call openStats() when clicked
+  const PricesButton = document.createElement("button");
+  PricesButton.innerText = "Prices";
+  PricesButton.classList.add("prices-button");
+  enlargedCardContainer.appendChild(PricesButton);
+  let statsButtonClicked = false;
+  PricesButton.addEventListener("click", () => {
     if (!statsButtonClicked) {
       statsButtonClicked = true;
       openStats();
-      
-      setTimeout(() => {  // Re-enable the click event after a short delay (e.g., 500ms)
-        statsButtonClicked = false;
-      }, 500);
     }
   });
-  
-  const cardRect = card.getBoundingClientRect();  // Position the "Stats" button below the enlarged card
-  const statsButtonTop = cardRect.bottom + 20; // Add some spacing (20px) below the card
-  statsButton.style.left = "50%";
-  statsButton.style.transform = "translateX(-50%)";
-  statsButton.style.top = `${statsButtonTop}px`;  
-  document.querySelector("body").appendChild(enlargedCardContainer);  // Append the new container to the body  
-  enlargedCardContainer.addEventListener("click", (event) => {  // Add event listener to remove the enlarged card and container when clicking outside
+  enlargedCardContainer.addEventListener("click", (event) => {
     if (!enlargedCard.contains(event.target)) {
       enlargedCardContainer.remove();
     }
-  });
+  }
+  );
+  document.querySelector("body").appendChild(enlargedCardContainer);
 }
 
 function openStats() {
@@ -101,8 +94,8 @@ function openStats() {
   const pokemonDataInLocalStorage = localStorage.getItem("pokemonData");
   if (pokemonDataInLocalStorage) {
     const pokemonData = JSON.parse(pokemonDataInLocalStorage);
-    const cardId = pokemonData[0].id; // Hier nehmen wir die ID des ersten Pokemons im Array als Beispiel
-    fetchAndDisplayPrices(cardId, newCard); // Hier wird die Funktion aufgerufen, um die Preise abzurufen und anzuzeigen
+    const cardId = pokemonData[0]; // Hier nehmen wir die ID des ersten Pokemons im Array als Beispiel
+    fetchAndDisplayPrices(clickedPokemon, newCard); // Hier wird die Funktion aufgerufen, um die Preise abzurufen und anzuzeigen
   } else {
     fetchAndDisplayPokemonImage();
   }
@@ -140,19 +133,14 @@ function generatePricesHTML(newCard, prices) {
     <p>High: $${prices.high}</p>
     <p>Market: $${prices.market}</p>
   `;
-
   if (prices.directLow !== null) {
     newCard.innerHTML += `<p>Direct Low: $${prices.directLow}</p>`;
-  }
-
-  // Erstelle ein Canvas-Element für das Balkendiagramm
-  const canvas = document.createElement('canvas');
+  }  
+  const canvas = document.createElement('canvas');  // Erstelle ein Canvas-Element für das Balkendiagramm
   canvas.width = 400; // Breite des Diagramms (kann angepasst werden)
   canvas.height = 200; // Höhe des Diagramms (kann angepasst werden)
-  newCard.appendChild(canvas);
-
-  // Daten für das Balkendiagramm
-  const chartData = {
+  newCard.appendChild(canvas);  
+  const chartData = {  // Daten für das Balkendiagramm
     labels: ['Low', 'Mid', 'High', 'Market'],
     datasets: [
       {
@@ -163,24 +151,21 @@ function generatePricesHTML(newCard, prices) {
         borderWidth: 1
       }
     ]
-  };
-
-  // Optionen für das Balkendiagramm
-  const chartOptions = {
+  };  
+  const chartOptions = {  // Optionen für das Balkendiagramm
     scales: {
       y: {
         beginAtZero: true
       }
     }
-  };
-
-  // Erstelle das Balkendiagramm
-  new Chart(canvas, {
+  };  
+  new Chart(canvas, {  // Erstelle das Balkendiagramm
     type: 'bar',
     data: chartData,
     options: chartOptions
   });
 }
+
 
 
 async function fetchAndDisplayPrices(id, newCard) {

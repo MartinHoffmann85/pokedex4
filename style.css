@@ -49,14 +49,10 @@ header {
   display: inline-block;
   vertical-align: middle;
   margin: 20px 10px;
-  cursor: pointer;
-  /* Animation later */
-  /* animation: cardTransformRotate 3s ease infinite; */  /* Rotate function call */
+  cursor: pointer;  
 }
 
-.card.active {
-  /* Existing styles for the active card */
-  /* ... */
+.card.active {  
   transform: scale(1.2); /* Enlarge the active card */
   z-index: 2; /* Bring the active card to the front */
 }
@@ -69,10 +65,10 @@ header {
     115deg,
     transparent 0%,
     transparent 20%,
-    /* Anpassung der Verlaufspunkte */ rgba(0, 231, 255, 0.9) 40%,
-    /* Anpassung der Verlaufspunkte und Opazität */ rgba(255, 0, 231, 0.9) 60%,
-    /* Anpassung der Verlaufspunkte und Opazität */ transparent 80%,
-    /* Anpassung der Verlaufspunkte */ transparent 100%
+    rgba(0, 231, 255, 0.9) 40%,  /* Anpassung der Verlaufspunkte */
+    rgba(255, 0, 231, 0.9) 60%,  /* Anpassung der Verlaufspunkte und Opazität */
+    transparent 80%,  /* Anpassung der Verlaufspunkte und Opazität */
+    transparent 100%  /* Anpassung der Verlaufspunkte */ 
   );
 }
 
@@ -172,7 +168,7 @@ header {
   animation: none !important;  
 }
 
-.stats-button {
+.prices-button {
   padding: 10px 20px;
   font-size: 16px;
   background-color: #4979c9;
@@ -180,8 +176,7 @@ header {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  outline: none;
-  margin-left: 100px;
+  outline: none;  
 }
 
 .back-button {
@@ -192,8 +187,7 @@ header {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  outline: none;
-  margin-left: 100px;
+  outline: none; 
 }
 
 .displayFlex {
