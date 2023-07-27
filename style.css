@@ -212,16 +212,6 @@ header {
   opacity: 0;
 }
 
-/* Hinzufügen Hintergrundbild von .card:after, wenn die Klasse "open-stats" vorhanden ist */
-.open-stats .card:after {
-  background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/13471/sparkles.gif");  /* Star Sparkle Efect */
-}
-
-.open-stats .card:hover:before {
-  opacity: 1;
-}
-
-
 
 /* Animations */
 @keyframes starSparkle {

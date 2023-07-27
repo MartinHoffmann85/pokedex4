@@ -124,8 +124,9 @@ function backButtonHandler() {
   } else {
     fetchAndDisplayPokemonImage();
   }
-
+  
   contentContainer.classList.remove('displayFlex'); // Entferne die Klasse "displayFlex" vom Container "content"
+  contentContainer.classList.remove('open-stats');
 }
 
 
