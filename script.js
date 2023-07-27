@@ -1,10 +1,11 @@
-let clickedPokemon = null;  // Define a global variable to store the clicked Pokemon ID
+let clickedPokemonID = null;  // clicked Pokemon ID
 
 
 
 
 function init() {
   fetchAndDisplayPokemonImage();
+  displayLoadMorePokemonsButton();
 }
 
 
@@ -32,9 +33,28 @@ async function fetchAndDisplayPokemonImage() {  // Function to fetch Pokemon dat
 
 
 
+function displayLoadMorePokemonsButton() {
+  const contentContainer = document.querySelector(".content");
+  //const loadMorePokemonsButtonContainer = document.createElement("div");
+  const loadMorePokemonsButton = document.createElement("button");
+  loadMorePokemonsButton.classList.add("prices-button");
+  loadMorePokemonsButton.innerText = "Load more Pokemons";
+  contentContainer.appendChild(loadMorePokemonsButton);
+  loadMorePokemonsButton.addEventListener("click", () => {
+    ;
+  });
+}
+
+
+function loadMorePokemons() {
+
+}
+
+
+
 function displayPokemonImage(pokemonData, cardsContainer) {
   pokemonData.forEach((pokemon) => {
-    const card = document.createElement("div");
+    const card = document.createElement('div');
     card.classList.add("card");
     card.style.backgroundImage = `url(${pokemon.images.large})`;  
     card.dataset.pokemonId = pokemon.id; // Add the Pokemon ID to the card's dataset
@@ -54,7 +74,7 @@ function displayPokemonImage(pokemonData, cardsContainer) {
 
 
 function handleCardClick(card) {
-  clickedPokemon = card.dataset.pokemonId; // Store the clicked Pokemon ID in the global variable
+  clickedPokemonID = card.dataset.pokemonId; // Store the clicked Pokemon ID in the global variable
   const enlargedCardContainer = document.createElement("div");
   enlargedCardContainer.classList.add("enlarged-card-container");
   enlargedCardContainer.classList.add("displayFlex");
@@ -107,7 +127,7 @@ function openPrices() {
   contentContainer.appendChild(backButton);
   backButton.addEventListener("click", backButtonHandler);
 
-  fetchAndDisplayPrices(clickedPokemon, newCard); // Hier wird die Funktion aufgerufen, um die Preise abzurufen und anzuzeigen
+  fetchAndDisplayPrices(clickedPokemonID, newCard); // Hier wird die Funktion aufgerufen, um die Preise abzurufen und anzuzeigen
 }
 
 
@@ -122,11 +142,12 @@ function backButtonHandler() {
     const pokemonData = JSON.parse(pokemonDataInLocalStorage);
     displayPokemonImage(pokemonData, contentContainer);
   } else {
-    fetchAndDisplayPokemonImage();
+    fetchAndDisplayPokemonImage();    
   }
   
-  contentContainer.classList.remove('displayFlex'); // Entferne die Klasse "displayFlex" vom Container "content"
-  contentContainer.classList.remove('open-stats');
+  displayLoadMorePokemonsButton();
+  contentContainer.classList.remove('displayFlex'); // Entfernt die Klasse "displayFlex" vom Container "content"
+  contentContainer.classList.remove('open-stats');  // Entfernt die Klasse "displayFlex" vom Container "content"
 }
 
 
