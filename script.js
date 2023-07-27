@@ -1,8 +1,12 @@
 let clickedPokemon = null;  // Define a global variable to store the clicked Pokemon ID
 
+
+
 function init() {
   fetchAndDisplayPokemonImage();
 }
+
+
 
 async function fetchAndDisplayPokemonImage() {  // Function to fetch Pokemon data from the API and display cards with images  
   const pokemonDataInLocalStorage = localStorage.getItem('pokemonData'); // Überprüfen, ob die Pokemon-Daten bereits im LocalStorage vorhanden sind
@@ -16,7 +20,7 @@ async function fetchAndDisplayPokemonImage() {  // Function to fetch Pokemon dat
       const response = await fetch(apiUrl);
       const data = await response.json();
       const pokemonData = data.data.slice(0, 10);      
-      localStorage.setItem('pokemonData', JSON.stringify(pokemonData));  // Speichere die Pokemon-Daten im LocalStorage  
+      localStorage.setItem('pokemonData', JSON.stringify(pokemonData));  // Save the Pokemon-Data in LocalStorage  
       const cardsContainer = document.querySelector('.content');
       displayPokemonImage(pokemonData, cardsContainer);
     } catch (error) {
@@ -24,6 +28,8 @@ async function fetchAndDisplayPokemonImage() {  // Function to fetch Pokemon dat
     }
   }
 }
+
+
 
 function displayPokemonImage(pokemonData, cardsContainer) {
   pokemonData.forEach((pokemon) => {
@@ -46,15 +52,16 @@ function displayPokemonImage(pokemonData, cardsContainer) {
 
 
 
-function handleCardClick(card) {  
-  clickedPokemon = card.dataset.pokemonId;  // Store the clicked Pokemon ID in the global variable
+function handleCardClick(card) {
+  clickedPokemon = card.dataset.pokemonId; // Store the clicked Pokemon ID in the global variable
   const enlargedCardContainer = document.createElement("div");
   enlargedCardContainer.classList.add("enlarged-card-container");
   enlargedCardContainer.classList.add("displayFlex");
   const enlargedCard = card.cloneNode(true);
   enlargedCard.classList.add("enlarged-card");
   enlargedCard.classList.remove("active");
-  enlargedCard.classList.add("no-animation");
+  enlargedCard.classList.add("no-animation"); // Add the no-animation class to prevent animations
+  enlargedCard.classList.remove("starSparkle"); // Remove the starSparkle class to prevent the animation
   enlargedCardContainer.appendChild(enlargedCard);
   const PricesButton = document.createElement("button");
   PricesButton.innerText = "Prices";
@@ -64,19 +71,20 @@ function handleCardClick(card) {
   PricesButton.addEventListener("click", () => {
     if (!statsButtonClicked) {
       statsButtonClicked = true;
-      openStats();
+      openPrices();
     }
   });
   enlargedCardContainer.addEventListener("click", (event) => {
     if (!enlargedCard.contains(event.target)) {
       enlargedCardContainer.remove();
     }
-  }
-  );
+  });
   document.querySelector("body").appendChild(enlargedCardContainer);
 }
 
-function openStats() {
+
+
+function openPrices() {
   const contentContainer = document.querySelector(".content");
   contentContainer.classList.add("vh100");
   contentContainer.innerHTML = "";
@@ -88,23 +96,15 @@ function openStats() {
   newCard.style.backgroundColor = "white";
   newCard.classList.remove("active");
   newCard.style.animation = "none";
-
-  contentContainer.appendChild(newCard);
-
-  const pokemonDataInLocalStorage = localStorage.getItem("pokemonData");
-  if (pokemonDataInLocalStorage) {
-    const pokemonData = JSON.parse(pokemonDataInLocalStorage);
-    const cardId = pokemonData[0]; // Hier nehmen wir die ID des ersten Pokemons im Array als Beispiel
-    fetchAndDisplayPrices(clickedPokemon, newCard); // Hier wird die Funktion aufgerufen, um die Preise abzurufen und anzuzeigen
-  } else {
-    fetchAndDisplayPokemonImage();
-  }
+  contentContainer.appendChild(newCard);    
 
   const backButton = document.createElement("button");
   backButton.innerText = "Back";
   backButton.classList.add("back-button");
   contentContainer.appendChild(backButton);
   backButton.addEventListener("click", backButtonHandler);
+
+  fetchAndDisplayPrices(clickedPokemon, newCard); // Hier wird die Funktion aufgerufen, um die Preise abzurufen und anzuzeigen
 }
 
 
@@ -120,6 +120,30 @@ function backButtonHandler() {
     displayPokemonImage(pokemonData, contentContainer);
   } else {    
     fetchAndDisplayPokemonImage();  // Wenn die Daten nicht im LocalStorage vorhanden sind, rufe sie von der API ab
+  }
+}
+
+
+
+async function fetchAndDisplayPrices(id, newCard) {
+  const apiUrl = `https://api.pokemontcg.io/v2/cards/${id}`;
+  try {
+    console.log('Fetching data from API...');
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+    console.log('API response:', data);
+
+    if (data && data.data && data.data.tcgplayer && data.data.tcgplayer.prices && data.data.tcgplayer.prices.holofoil) {
+      const prices = data.data.tcgplayer.prices.holofoil;
+      localStorage.setItem('pokemonPrices', JSON.stringify(prices));
+      console.log('Prices fetched and saved:', prices);
+      generatePricesHTML(newCard, prices);
+    } else {      
+      newCard.innerHTML = "<p>Prices not available for this Pokemon.</p>";  // If prices are not found, display a message in the card
+    }
+  } catch (error) {
+    console.error('Error fetching prices:', error);  // If an error occurs, display an error message in the card    
+    newCard.innerHTML = "<p>Error fetching prices.</p>";
   }
 }
 
@@ -165,28 +189,3 @@ function generatePricesHTML(newCard, prices) {
     options: chartOptions
   });
 }
-
-
-
-async function fetchAndDisplayPrices(id, newCard) {
-  const apiUrl = `https://api.pokemontcg.io/v2/cards/${id}`;
-  try {
-    console.log('Fetching data from API...');
-    const response = await fetch(apiUrl);
-    const data = await response.json();
-    console.log('API response:', data);
-
-    if (data && data.data && data.data.tcgplayer && data.data.tcgplayer.prices && data.data.tcgplayer.prices.holofoil) {
-      const prices = data.data.tcgplayer.prices.holofoil;
-      localStorage.setItem('pokemonPrices', JSON.stringify(prices));
-      console.log('Prices fetched and saved:', prices);
-      generatePricesHTML(newCard, prices);
-    } else {      
-      newCard.innerHTML = "<p>Prices not available for this Pokemon.</p>";  // If prices are not found, display a message in the card
-    }
-  } catch (error) {
-    console.error('Error fetching prices:', error);  // If an error occurs, display an error message in the card    
-    newCard.innerHTML = "<p>Error fetching prices.</p>";
-  }
-}
-

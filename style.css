@@ -89,7 +89,7 @@ header {
   background-position: 10% 10%;
   background-repeat: no-repeat;
   background-size: 200% 200%;
-  mix-blend-mode: color-dodge;
+  /* mix-blend-mode: color-dodge; */
   opacity: 0.9;
   z-index: 1;
   animation: holoGradient 3s ease infinite;
