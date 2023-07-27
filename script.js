@@ -86,6 +86,7 @@ function handleCardClick(card) {
 
 function openPrices() {
   const contentContainer = document.querySelector(".content");
+  contentContainer.classList.add("open-stats"); // Füge die Klasse "open-stats" hinzu, um das Hintergrundbild zu entfernen
   contentContainer.classList.add("vh100");
   contentContainer.innerHTML = "";
 
@@ -109,35 +110,31 @@ function openPrices() {
 
 
 
-function backButtonHandler() {  
-  const contentContainer = document.querySelector('.content');  // Find the content container
-  contentContainer.classList.remove('vh100');  
-  contentContainer.innerHTML = '';  // Remove all existing content (cards)  
-  const pokemonDataInLocalStorage = localStorage.getItem('pokemonData');  // Überprüfen, ob die Pokemon-Daten im LocalStorage vorhanden sind
-
-  if (pokemonDataInLocalStorage) {  // Wenn die Daten im LocalStorage vorhanden sind, rufe sie ab und zeige sie an    
+function backButtonHandler() {
+  const contentContainer = document.querySelector('.content');
+  contentContainer.classList.remove('vh100');
+  contentContainer.innerHTML = '';
+  const pokemonDataInLocalStorage = localStorage.getItem('pokemonData');
+  if (pokemonDataInLocalStorage) {
     const pokemonData = JSON.parse(pokemonDataInLocalStorage);
     displayPokemonImage(pokemonData, contentContainer);
-  } else {    
-    fetchAndDisplayPokemonImage();  // Wenn die Daten nicht im LocalStorage vorhanden sind, rufe sie von der API ab
-  }
+  } else {
+    fetchAndDisplayPokemonImage();
+  }  
+  contentContainer.classList.remove("open-stats");  // Entferne die "open-stats" Klasse, um das Hintergrundbild wieder zu aktivieren
 }
 
 
 
 async function fetchAndDisplayPrices(id, newCard) {
   const apiUrl = `https://api.pokemontcg.io/v2/cards/${id}`;
-  try {
-    console.log('Fetching data from API...');
+  try {    
     const response = await fetch(apiUrl);
-    const data = await response.json();
-    console.log('API response:', data);
-
+    const data = await response.json(); 
     if (data && data.data && data.data.tcgplayer && data.data.tcgplayer.prices && data.data.tcgplayer.prices.holofoil) {
       const prices = data.data.tcgplayer.prices.holofoil;
-      localStorage.setItem('pokemonPrices', JSON.stringify(prices));
-      console.log('Prices fetched and saved:', prices);
-      generatePricesHTML(newCard, prices);
+      localStorage.setItem('pokemonPrices', JSON.stringify(prices));      
+      generatePrices(newCard, prices);
     } else {      
       newCard.innerHTML = "<p>Prices not available for this Pokemon.</p>";  // If prices are not found, display a message in the card
     }
@@ -149,21 +146,12 @@ async function fetchAndDisplayPrices(id, newCard) {
 
 
 
-function generatePricesHTML(newCard, prices) {
-  newCard.innerHTML += `
-    <h2>Prices:</h2>
-    <p>Low: $${prices.low}</p>
-    <p>Mid: $${prices.mid}</p>
-    <p>High: $${prices.high}</p>
-    <p>Market: $${prices.market}</p>
-  `;
+function generatePrices(newCard, prices) {
+  generatePricesHTML(newCard, prices);
   if (prices.directLow !== null) {
     newCard.innerHTML += `<p>Direct Low: $${prices.directLow}</p>`;
   }  
-  const canvas = document.createElement('canvas');  // Erstelle ein Canvas-Element für das Balkendiagramm
-  canvas.width = 400; // Breite des Diagramms (kann angepasst werden)
-  canvas.height = 200; // Höhe des Diagramms (kann angepasst werden)
-  newCard.appendChild(canvas);  
+  const canvas = createCanvas(newCard);  
   const chartData = {  // Daten für das Balkendiagramm
     labels: ['Low', 'Mid', 'High', 'Market'],
     datasets: [
@@ -183,9 +171,36 @@ function generatePricesHTML(newCard, prices) {
       }
     }
   };  
-  new Chart(canvas, {  // Erstelle das Balkendiagramm
+  drawPricesChart(canvas, chartData, chartOptions);
+}
+
+
+
+function createCanvas(newCard) {
+  const canvas = document.createElement('canvas'); // Erstelle ein Canvas-Element für das Balkendiagramm
+  canvas.width = 400; // Breite des Diagramms (kann angepasst werden)
+  canvas.height = 200; // Höhe des Diagramms (kann angepasst werden)
+  newCard.appendChild(canvas);
+  return canvas;
+}
+
+function generatePricesHTML(newCard, prices) {
+  newCard.innerHTML += `
+    <h2>Prices:</h2>
+    <p>Low: $${prices.low}</p>
+    <p>Mid: $${prices.mid}</p>
+    <p>High: $${prices.high}</p>
+    <p>Market: $${prices.market}</p>
+  `;
+}
+
+
+
+function drawPricesChart(canvas, chartData, chartOptions) {
+  new Chart(canvas, {
     type: 'bar',
     data: chartData,
     options: chartOptions
   });
 }
+
