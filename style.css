@@ -192,6 +192,7 @@ header {
 .displayFlex {
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 .vh100 {
@@ -210,6 +211,8 @@ header {
 .open-stats .card:hover:before {
   opacity: 0;
 }
+
+
 
 /* Animations */
 @keyframes starSparkle {

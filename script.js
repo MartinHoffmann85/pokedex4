@@ -88,6 +88,7 @@ function openPrices() {
   const contentContainer = document.querySelector(".content");
   contentContainer.classList.add("open-stats"); // Füge die Klasse "open-stats" hinzu, um das Hintergrundbild zu entfernen
   contentContainer.classList.add("vh100");
+  contentContainer.classList.add("displayFlex");
   contentContainer.innerHTML = "";
 
   const newCard = document.createElement("div");
@@ -115,13 +116,15 @@ function backButtonHandler() {
   contentContainer.classList.remove('vh100');
   contentContainer.innerHTML = '';
   const pokemonDataInLocalStorage = localStorage.getItem('pokemonData');
+
   if (pokemonDataInLocalStorage) {
     const pokemonData = JSON.parse(pokemonDataInLocalStorage);
     displayPokemonImage(pokemonData, contentContainer);
   } else {
     fetchAndDisplayPokemonImage();
-  }  
-  contentContainer.classList.remove("open-stats");  // Entferne die "open-stats" Klasse, um das Hintergrundbild wieder zu aktivieren
+  }
+
+  contentContainer.classList.remove('displayFlex'); // Entferne die Klasse "displayFlex" vom Container "content"
 }
 
 
