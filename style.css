@@ -24,7 +24,7 @@ header {
 .content {
   position: relative;
   perspective: 1000px;
-  background-image: url(./img/pokemon_background_image2.jpg);
+  background-image: url(./img/pokemon-background-desktop-1600x900.jpg);
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -36,8 +36,7 @@ header {
 .card {
   width: 320px;
   height: 446px;
-  background-color: #211799;
-  
+  background-color: #211799;  
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -253,5 +252,17 @@ header {
   }
   66% {
     transform: rotateZ(3deg) rotateX(7deg) rotateY(-6deg);
+  }
+}
+
+@media (max-width: 600px) {
+  .enlarged-card {
+    width: 250px; 
+    height: 350px;
+  }
+
+  .card {
+    width: 250px; 
+    height: 350px;
   }
 }
