@@ -4,8 +4,7 @@ let clickedPokemonID = null;  // clicked Pokemon ID
 
 
 function init() {
-  fetchAndDisplayPokemonImage();
-  displayLoadMorePokemonsButton();
+  fetchAndDisplayPokemonImage();  
 }
 
 
@@ -21,7 +20,7 @@ async function fetchAndDisplayPokemonImage() {  // Function to fetch Pokemon dat
     try {
       const response = await fetch(apiUrl);
       const data = await response.json();
-      const pokemonData = data.data.slice(0, 10);      
+      const pokemonData = data.data.slice(0, 100);      
       localStorage.setItem('pokemonData', JSON.stringify(pokemonData));  // Save the Pokemon-Data in LocalStorage  
       const cardsContainer = document.querySelector('.content');
       displayPokemonImage(pokemonData, cardsContainer);
@@ -29,25 +28,6 @@ async function fetchAndDisplayPokemonImage() {  // Function to fetch Pokemon dat
       console.error('Error fetching data:', error);
     }
   }
-}
-
-
-
-function displayLoadMorePokemonsButton() {
-  const contentContainer = document.querySelector(".content");
-  //const loadMorePokemonsButtonContainer = document.createElement("div");
-  const loadMorePokemonsButton = document.createElement("button");
-  loadMorePokemonsButton.classList.add("prices-button");
-  loadMorePokemonsButton.innerText = "Load more Pokemons";
-  contentContainer.appendChild(loadMorePokemonsButton);
-  loadMorePokemonsButton.addEventListener("click", () => {
-    ;
-  });
-}
-
-
-function loadMorePokemons() {
-
 }
 
 
@@ -144,8 +124,7 @@ function backButtonHandler() {
   } else {
     fetchAndDisplayPokemonImage();    
   }
-  
-  displayLoadMorePokemonsButton();
+    
   contentContainer.classList.remove('displayFlex'); // Entfernt die Klasse "displayFlex" vom Container "content"
   contentContainer.classList.remove('open-stats');  // Entfernt die Klasse "displayFlex" vom Container "content"
 }
@@ -230,3 +209,6 @@ function drawPricesChart(canvas, chartData, chartOptions) {
   });
 }
 
+function clearLocalStorage() {
+  localStorage.clear();
+}

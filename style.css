@@ -23,8 +23,9 @@ header {
 /* Content / Card */
 .content {
   position: relative;
-  perspective: 1000px;
-  background-image: url(./img/pokemon-background-desktop-1600x900.jpg);
+  perspective: 4000px;
+  /* background-image: url(./img/pokemon-background-desktop-1600x900.jpg); */
+  background-color: #211799;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
