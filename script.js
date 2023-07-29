@@ -8,6 +8,7 @@ async function init() {
   loadingScreen.style.display = 'block'; // Show the loading screen
   await fetchAndDisplayPokemonImage();
   loadingScreen.style.display = 'none'; // Hide the loading screen once the content is ready
+  searchPokemon();
 }
 
 
@@ -99,7 +100,7 @@ function openPrices() {
   newCard.id = "newCardID";
   newCard.classList.add("card");
   newCard.classList.add("colorBlack");
-  newCard.style.backgroundColor = "white";
+  newCard.style.backgroundColor = 'rgba(0, 231, 255, 0.9)';
   newCard.classList.remove("active");
   newCard.style.animation = "none";
   contentContainer.appendChild(newCard);    
@@ -211,6 +212,63 @@ function drawPricesChart(canvas, chartData, chartOptions) {
     options: chartOptions
   });
 }
+
+
+
+function searchPokemon() {
+  const searchInput = document.getElementById("searchInput");
+  const searchTerm = searchInput.value.toLowerCase().trim();
+  const pokemonDataInLocalStorage = localStorage.getItem("pokemonData");
+
+  if (pokemonDataInLocalStorage) {
+    const pokemonData = JSON.parse(pokemonDataInLocalStorage);
+    const foundPokemon = pokemonData.find((pokemon) =>
+      pokemon.name.toLowerCase().includes(searchTerm)
+    );
+
+    if (foundPokemon) {
+      displaySearchedPokemon(foundPokemon);
+    } else {
+      // Zeige eine Meldung, wenn das gesuchte Pokémon nicht gefunden wurde
+      alert("Pokémon not found!");
+    }
+  }
+}
+
+
+
+function displaySearchedPokemon(pokemon) {
+  const enlargedCardContainer = document.createElement("div");
+  enlargedCardContainer.classList.add("enlarged-card-container");
+  enlargedCardContainer.classList.add("displayFlex");
+
+  const enlargedCard = document.createElement("div");
+  enlargedCard.classList.add("enlarged-card");
+  enlargedCard.style.backgroundImage = `url(${pokemon.images.large})`;
+  enlargedCardContainer.appendChild(enlargedCard);
+
+  const PricesButton = document.createElement("button");
+  PricesButton.innerText = "Prices";
+  PricesButton.classList.add("prices-button");
+  enlargedCardContainer.appendChild(PricesButton);
+  let statsButtonClicked = false;
+  PricesButton.addEventListener("click", () => {
+    if (!statsButtonClicked) {
+      statsButtonClicked = true;
+      openPrices(pokemon);
+    }
+  });
+
+  enlargedCardContainer.addEventListener("click", (event) => {
+    if (!enlargedCard.contains(event.target)) {
+      enlargedCardContainer.remove();
+    }
+  });
+
+  document.querySelector("body").appendChild(enlargedCardContainer);
+}
+
+
 
 function clearLocalStorage() {
   localStorage.clear();

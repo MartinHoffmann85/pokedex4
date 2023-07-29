@@ -28,7 +28,7 @@
 
 
 <body onload="init()">
-    
+
     <div class="loading-screen" id="loadingScreen">
         <div class="loading-text">Loading...</div>
     </div>
@@ -38,7 +38,10 @@
             <img class="logoImgHeader" src="./img/pokedex_h1-removebg-preview.png">
             <button onclick="clearLocalStorage()">Clear Local storage</button>
         </div>
-        
+        <div>
+            <input type="text" id="searchInput" placeholder="Enter Pokemon name">
+            <button onclick="searchPokemon()">Search</button> <!-- Hinzugefügter Button -->
+        </div>
     </header>
 
     <div class="content">        
