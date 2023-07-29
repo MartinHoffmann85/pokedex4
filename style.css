@@ -189,6 +189,15 @@ header {
   outline: none; 
 }
 
+.searchSection {
+  margin-bottom: 20px;
+}
+
+.searchInput {
+  height: 34px;
+  border-radius: 5px;
+}
+
 .displayFlex {
   display: flex;
   flex-direction: column;

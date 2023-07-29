@@ -215,7 +215,7 @@ function drawPricesChart(canvas, chartData, chartOptions) {
 
 
 async function searchPokemon() {
-  const searchInput = document.getElementById("searchInput");
+  const searchInput = document.getElementById("searchInputID");
   const searchTerm = searchInput.value.toLowerCase().trim();
   const apiUrl = `https://api.pokemontcg.io/v2/cards?q=name:${searchTerm}`;
   try {

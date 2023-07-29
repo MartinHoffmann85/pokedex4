@@ -35,16 +35,15 @@
 
     <header>
         <div>
-            <img class="logoImgHeader" src="./img/pokedex_h1-removebg-preview.png">
-            <button onclick="clearLocalStorage()">Clear Local storage</button>
-        </div>
-        <div>
-            <input type="text" id="searchInput" placeholder="Enter Pokemon name">
-            <button onclick="searchPokemon()">Search</button> <!-- Hinzugefügter Button -->
-        </div>
+            <img class="logoImgHeader" src="./img/pokedex_h1-removebg-preview.png">            
+        </div>        
     </header>
 
-    <div class="content">        
+    <div class="content">  
+        <div class="searchSection">
+            <input type="text" class="searchInput" id="searchInputID" placeholder="Enter Pokemon name">
+            <button class="back-button" onclick="searchPokemon()">Search</button> <!-- Hinzugefügter Button -->
+        </div>      
         <!-- <div class="card"></div> -->    <!-- Developer tool to check rotate animation</!-->
     </div>
     
