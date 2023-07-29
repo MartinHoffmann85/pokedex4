@@ -7,8 +7,7 @@ async function init() {
   const loadingScreen = document.getElementById('loadingScreen');
   loadingScreen.style.display = 'block'; // Show the loading screen
   await fetchAndDisplayPokemonImage();
-  loadingScreen.style.display = 'none'; // Hide the loading screen once the content is ready
-  searchPokemon();
+  loadingScreen.style.display = 'none'; // Hide the loading screen once the content is ready  
 }
 
 
@@ -215,23 +214,22 @@ function drawPricesChart(canvas, chartData, chartOptions) {
 
 
 
-function searchPokemon() {
+async function searchPokemon() {
   const searchInput = document.getElementById("searchInput");
   const searchTerm = searchInput.value.toLowerCase().trim();
-  const pokemonDataInLocalStorage = localStorage.getItem("pokemonData");
-
-  if (pokemonDataInLocalStorage) {
-    const pokemonData = JSON.parse(pokemonDataInLocalStorage);
-    const foundPokemon = pokemonData.find((pokemon) =>
-      pokemon.name.toLowerCase().includes(searchTerm)
-    );
-
+  const apiUrl = `https://api.pokemontcg.io/v2/cards?q=name:${searchTerm}`;
+  try {
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+    const foundPokemon = data.data[0]; // Wir nehmen das erste gefundene Pokémon, falls vorhanden
     if (foundPokemon) {
       displaySearchedPokemon(foundPokemon);
-    } else {
-      // Zeige eine Meldung, wenn das gesuchte Pokémon nicht gefunden wurde
+    } else {  // Zeige eine Meldung, wenn das gesuchte Pokémon nicht gefunden wurde      
       alert("Pokémon not found!");
     }
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    alert("Error fetching data. Please try again later.");
   }
 }
 
