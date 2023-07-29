@@ -3,8 +3,11 @@ let clickedPokemonID = null;  // clicked Pokemon ID
 
 
 
-function init() {
-  fetchAndDisplayPokemonImage();  
+async function init() {
+  const loadingScreen = document.getElementById('loadingScreen');
+  loadingScreen.style.display = 'block'; // Show the loading screen
+  await fetchAndDisplayPokemonImage();
+  loadingScreen.style.display = 'none'; // Hide the loading screen once the content is ready
 }
 
 
