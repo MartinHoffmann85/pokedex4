@@ -17,7 +17,13 @@ body {
 header {
   display: flex;
   justify-content: center;
+  flex-direction: column;
+  align-items: center;
   background-color: #4979c9;
+}
+
+.logoImgHeader {
+  width: 300px;
 }
 
 /* Content / Card */
@@ -202,7 +208,27 @@ header {
 }
 
 .searchInput {
-  height: 34px;  
+  height: 34px;
+  border-radius: 15px;
+  border-color: black;
+  border: 2px solid;
+}
+
+.search-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #312896;  
+  color: black;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  outline: none;
+  text-decoration: none;
+}
+
+.search-button:hover {  
+  background-color: #4b4592;
 }
 
 footer {
@@ -211,6 +237,8 @@ footer {
   align-items: center;
   background-color: #4979c9;
   gap: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .Copyright {
@@ -220,7 +248,7 @@ footer {
 .links {
   text-decoration: none;
   color: #211799;
-  cursor: pointer;
+  cursor: pointer;  
 }
 
 .links:hover {
