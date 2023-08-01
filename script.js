@@ -160,22 +160,25 @@ function generatePrices(newCard, prices) {
     newCard.innerHTML += `<p>Direct Low: $${prices.directLow}</p>`;
   }  
   const canvas = createCanvas(newCard);  
-  const chartData = {  // Daten für das Balkendiagramm
+  const chartData = {
     labels: ['Low', 'Mid', 'High', 'Market'],
     datasets: [
       {
         label: 'Prices',
         data: [prices.low, prices.mid, prices.high, prices.market],
-        backgroundColor: ['rgba(255, 99, 132, 0.5)', 'rgba(54, 162, 235, 0.5)', 'rgba(255, 206, 86, 0.5)', 'rgba(75, 192, 192, 0.5)'],
-        borderColor: ['rgb(255, 99, 132)', 'rgb(54, 162, 235)', 'rgb(255, 206, 86)', 'rgb(75, 192, 192)'],
+        backgroundColor: ['rgba(255, 99, 132, 0.9)', 'rgba(54, 162, 235, 0.9)', 'rgba(255, 206, 86, 0.9)', 'rgba(165, 42, 42, 0.9)'],
+        borderColor: ['rgb(0, 0, 0)', 'rgb(0, 0, 0)', 'rgb(0, 0, 0)', 'rgb(0, 0, 0)'],
         borderWidth: 1
       }
     ]
   };  
-  const chartOptions = {  // Optionen für das Balkendiagramm
+  const chartOptions = {
     scales: {
       y: {
-        beginAtZero: true
+        beginAtZero: true,
+        grid: {
+          color: 'rgba(0, 0, 0, 1), ' // Setze die Farbe der y-Achsenlinien auf Schwarz
+        }
       }
     }
   };  
