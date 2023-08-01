@@ -189,7 +189,8 @@ header {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  outline: none;  
+  outline: none;
+  text-decoration: none;
 }
 
 .back-button:hover {
@@ -224,6 +225,15 @@ footer {
 
 .links:hover {
   color: #5a51bd;
+}
+
+.impressumContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  color: black;
+  background-color: rgb(185, 184, 184);
 }
 
 .displayFlex {

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pokedex 4</title>
+    <title>Pokedex Impressum</title>
 
     <!--style.css integration</!-->
     <link rel="stylesheet" href="./style.css">
@@ -11,46 +11,47 @@
     <!--script.js integration</!-->
     <script src="./script.js"></script>
 
-    <!--Vanilla-tilt js integration</!-->
-    <script type="text/javascript" src="./vanilla-tilt.js"></script>
-
-    <!--Chart integration</!-->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <!--Favicon</!-->
     <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
-    <link rel="manifest" href="./site.webmanifest">    
-    
+    <link rel="manifest" href="./site.webmanifest">
+
+
+
 </head>
 
-
-
-<body onload="init()">
-
-    <div class="loading-screen" id="loadingScreen">
-        <div class="loading-text">Loading...</div>
-    </div>
-
+<body>
     <header>
         <div>
             <img class="logoImgHeader" src="./img/pokedex_h1-removebg-preview.png">            
         </div>        
     </header>
 
-    <div class="content">  
-        <div class="searchSection">
-            <input type="text" class="searchInput" id="searchInputID" placeholder="Enter Pokemon name">
-            <button class="back-button" onclick="searchPokemon()">Search</button> 
-        </div>      
+
+
+    <div class="impressumContainer">
+        <h1>Impressum</h1>
+
+        <h2>Angaben gem&auml;&szlig; &sect; 5 TMG</h2>
+        <p>Martin Hoffmann<br />
+        Blumenweg 5<br />
+        27330 Asendorf</p>
+    
+        <h2>Kontakt</h2>
+        <p>Telefon: 6854684634164<br />
+        Telefax: 6584684848948464<br />
+        E-Mail: teclis1@gmx.de</p>
+    
+        <p>Quelle: <a href="https://www.e-recht24.de">eRecht24</a></p>
         
+        <a class="back-button" href="./index.html">Back</a>
     </div>
     
     <footer>        
         <p class="Copyright">&copy; Copyright 2023 Martin Hoffmann, All Rights Reserved</p>
-        <a class="links" href="./dataSecurity.html">Data Security</a>
-        <a class="links" href="./impressum.html">Impressum</a>      
+        <a class="links" href="./dataSecurity.html">Data Security</a>              
     </footer>
     
 </body>
