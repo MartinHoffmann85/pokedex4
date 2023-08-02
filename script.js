@@ -1,5 +1,14 @@
 let clickedPokemonID = null;  // clicked Pokemon ID
-
+const loadChartOptions = {
+  scales: {
+    y: {
+      beginAtZero: true,
+      grid: {
+        color: 'rgba(0, 0, 0, 1), '
+      }
+    }
+  }
+};
 
 
 
@@ -19,17 +28,23 @@ async function fetchAndDisplayPokemonImage() {  // Function to fetch Pokemon dat
     const cardsContainer = document.querySelector('.content');
     displayPokemonImage(pokemonData, cardsContainer);
   } else {  // Wenn die Daten nicht im LocalStorage vorhanden sind, rufe sie von der API ab    
-    const apiUrl = 'https://api.pokemontcg.io/v2/cards';  
-    try {
-      const response = await fetch(apiUrl);
-      const data = await response.json();
-      const pokemonData = data.data.slice(0, 100);      
-      localStorage.setItem('pokemonData', JSON.stringify(pokemonData));  // Save the Pokemon-Data in LocalStorage  
-      const cardsContainer = document.querySelector('.content');
-      displayPokemonImage(pokemonData, cardsContainer);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
+    await fetchPokemonJsonFromUrl();
+  }
+}
+
+
+
+async function fetchPokemonJsonFromUrl() {
+  const apiUrl = 'https://api.pokemontcg.io/v2/cards';
+  try {
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+    const pokemonData = data.data.slice(0, 100);
+    localStorage.setItem('pokemonData', JSON.stringify(pokemonData)); // Save the Pokemon-Data in LocalStorage  
+    const cardsContainer = document.querySelector('.content');
+    displayPokemonImage(pokemonData, cardsContainer);
+  } catch (error) {
+    console.error('Error fetching data:', error);
   }
 }
 
@@ -58,26 +73,10 @@ function displayPokemonImage(pokemonData, cardsContainer) {
 
 function handleCardClick(card) {
   clickedPokemonID = card.dataset.pokemonId; // Store the clicked Pokemon ID in the global variable
-  const enlargedCardContainer = document.createElement("div");
-  enlargedCardContainer.classList.add("enlarged-card-container");
-  enlargedCardContainer.classList.add("displayFlex");
-  const enlargedCard = card.cloneNode(true);
-  enlargedCard.classList.add("enlarged-card");
-  enlargedCard.classList.remove("active");
-  enlargedCard.classList.add("no-animation"); // Add the no-animation class to prevent animations
-  enlargedCard.classList.remove("starSparkle"); // Remove the starSparkle class to prevent the animation
-  enlargedCardContainer.appendChild(enlargedCard);
-  const PricesButton = document.createElement("button");
-  PricesButton.innerText = "Prices";
-  PricesButton.classList.add("prices-button");
-  enlargedCardContainer.appendChild(PricesButton);
+  const { enlargedCardContainer, enlargedCard } = createEnlargedContainer(card);
+  const PricesButton = createPricesButton(enlargedCardContainer);
   let statsButtonClicked = false;
-  PricesButton.addEventListener("click", () => {
-    if (!statsButtonClicked) {
-      statsButtonClicked = true;
-      openPrices();
-    }
-  });
+  statsButtonClicked = checkStatsButtonClicked(PricesButton, statsButtonClicked);
   enlargedCardContainer.addEventListener("click", (event) => {
     if (!enlargedCard.contains(event.target)) {
       enlargedCardContainer.remove();
@@ -88,13 +87,63 @@ function handleCardClick(card) {
 
 
 
-function openPrices() {
-  const contentContainer = document.querySelector(".content");
-  contentContainer.classList.add("open-stats"); // Füge die Klasse "open-stats" hinzu, um das Hintergrundbild zu entfernen
-  contentContainer.classList.add("vh100");
-  contentContainer.classList.add("displayFlex");
-  contentContainer.innerHTML = "";
+function checkStatsButtonClicked(PricesButton, statsButtonClicked) {
+  PricesButton.addEventListener("click", () => {
+    if (!statsButtonClicked) {
+      statsButtonClicked = true;
+      openPrices();
+    }
+  });
+  return statsButtonClicked;
+}
 
+
+
+function createEnlargedContainer(card) {
+  const enlargedCardContainer = document.createElement("div");
+  enlargedCardContainer.classList.add("enlarged-card-container");
+  enlargedCardContainer.classList.add("displayFlex");
+  const enlargedCard = card.cloneNode(true);
+  enlargedCard.classList.add("enlarged-card");
+  enlargedCard.classList.remove("active");
+  enlargedCard.classList.add("no-animation"); // Add the no-animation class to prevent animations
+  enlargedCard.classList.remove("starSparkle"); // Remove the starSparkle class to prevent the animation
+  enlargedCardContainer.appendChild(enlargedCard);
+  return { enlargedCardContainer, enlargedCard };
+}
+
+
+
+function createPricesButton(enlargedCardContainer) {
+  const PricesButton = document.createElement("button");
+  PricesButton.innerText = "Prices";
+  PricesButton.classList.add("prices-button");
+  enlargedCardContainer.appendChild(PricesButton);
+  return PricesButton;
+}
+
+
+
+function openPrices() {
+  const contentContainer = createContentContainer();
+  const newCard = createNewCard(contentContainer); 
+  createBackButton(contentContainer);
+  fetchAndDisplayPrices(clickedPokemonID, newCard); // Hier wird die Funktion aufgerufen, um die Preise abzurufen und anzuzeigen
+}
+
+
+
+function createBackButton(contentContainer) {
+  const backButton = document.createElement("button");
+  backButton.innerText = "Back";
+  backButton.classList.add("back-button");
+  contentContainer.appendChild(backButton);
+  backButton.addEventListener("click", backButtonHandler);
+}
+
+
+
+function createNewCard(contentContainer) {
   const newCard = document.createElement("div");
   newCard.id = "newCardID";
   newCard.classList.add("card");
@@ -102,15 +151,19 @@ function openPrices() {
   newCard.style.backgroundColor = 'rgba(0, 231, 255, 0.9)';
   newCard.classList.remove("active");
   newCard.style.animation = "none";
-  contentContainer.appendChild(newCard);    
+  contentContainer.appendChild(newCard);
+  return newCard;
+}
 
-  const backButton = document.createElement("button");
-  backButton.innerText = "Back";
-  backButton.classList.add("back-button");
-  contentContainer.appendChild(backButton);
-  backButton.addEventListener("click", backButtonHandler);
 
-  fetchAndDisplayPrices(clickedPokemonID, newCard); // Hier wird die Funktion aufgerufen, um die Preise abzurufen und anzuzeigen
+
+function createContentContainer() {
+  const contentContainer = document.querySelector(".content");
+  contentContainer.classList.add("open-stats"); // Füge die Klasse "open-stats" hinzu, um das Hintergrundbild zu entfernen
+  contentContainer.classList.add("vh100");
+  contentContainer.classList.add("displayFlex");
+  contentContainer.innerHTML = "";
+  return contentContainer;
 }
 
 
@@ -120,14 +173,12 @@ function backButtonHandler() {
   contentContainer.classList.remove('vh100');
   contentContainer.innerHTML = '';
   const pokemonDataInLocalStorage = localStorage.getItem('pokemonData');
-
   if (pokemonDataInLocalStorage) {
     const pokemonData = JSON.parse(pokemonDataInLocalStorage);
     displayPokemonImage(pokemonData, contentContainer);
   } else {
     fetchAndDisplayPokemonImage();    
-  }
-    
+  }    
   contentContainer.classList.remove('displayFlex'); // Entfernt die Klasse "displayFlex" vom Container "content"
   contentContainer.classList.remove('open-stats');  // Entfernt die Klasse "displayFlex" vom Container "content"
 }
@@ -135,32 +186,47 @@ function backButtonHandler() {
 
 
 async function fetchAndDisplayPrices(id, newCard) {
-  const apiUrl = `https://api.pokemontcg.io/v2/cards/${id}`;
-  try {    
-    const response = await fetch(apiUrl);
-    const data = await response.json(); 
-    if (data && data.data && data.data.tcgplayer && data.data.tcgplayer.prices && data.data.tcgplayer.prices.holofoil) {
-      const prices = data.data.tcgplayer.prices.holofoil;
-      localStorage.setItem('pokemonPrices', JSON.stringify(prices));      
-      generatePrices(newCard, prices);
-    } else {      
-      newCard.innerHTML = "<p>Prices not available for this Pokemon.</p>";  // If prices are not found, display a message in the card
-    }
+  const prices = await fetchPrices(id);
+  displayPrices(newCard, prices);
+}
+
+
+
+async function fetchPrices(id) {
+  try {
+    const data = await (await fetch(`https://api.pokemontcg.io/v2/cards/${id}`)).json();
+    if (data?.data?.tcgplayer?.prices?.holofoil) {
+      localStorage.setItem('pokemonPrices', JSON.stringify(data.data.tcgplayer.prices.holofoil));
+      return data.data.tcgplayer.prices.holofoil;
+    } else return null;
   } catch (error) {
-    console.error('Error fetching prices:', error);  // If an error occurs, display an error message in the card    
-    newCard.innerHTML = "<p>Error fetching prices.</p>";
+    console.error('Error fetching prices:', error);
+    return null;
   }
+}
+
+
+
+function displayPrices(newCard, prices) {
+  if (prices) generatePrices(newCard, prices);
+  else newCard.innerHTML = "<p>Prices not available for this Pokemon.</p>";
 }
 
 
 
 function generatePrices(newCard, prices) {
   generatePricesHTML(newCard, prices);
-  if (prices.directLow !== null) {
-    newCard.innerHTML += `<p>Direct Low: $${prices.directLow}</p>`;
-  }  
+  checkPricesDirectLow(prices, newCard);  
   const canvas = createCanvas(newCard);  
-  const chartData = {
+  const chartData = LoadChartData(prices);  
+  const chartOptions = loadChartOptions;  
+  drawPricesChart(canvas, chartData, chartOptions);
+}
+
+
+
+function LoadChartData(prices) {
+  return {
     labels: ['Low', 'Mid', 'High', 'Market'],
     datasets: [
       {
@@ -171,18 +237,15 @@ function generatePrices(newCard, prices) {
         borderWidth: 1
       }
     ]
-  };  
-  const chartOptions = {
-    scales: {
-      y: {
-        beginAtZero: true,
-        grid: {
-          color: 'rgba(0, 0, 0, 1), ' // Setze die Farbe der y-Achsenlinien auf Schwarz
-        }
-      }
-    }
-  };  
-  drawPricesChart(canvas, chartData, chartOptions);
+  };
+}
+
+
+
+function checkPricesDirectLow(prices, newCard) {
+  if (prices.directLow !== null) {
+    newCard.innerHTML += `<p>Direct Low: $${prices.directLow}</p>`;
+  }
 }
 
 
@@ -194,6 +257,8 @@ function createCanvas(newCard) {
   newCard.appendChild(canvas);
   return canvas;
 }
+
+
 
 function generatePricesHTML(newCard, prices) {
   newCard.innerHTML += `
@@ -221,17 +286,22 @@ async function searchPokemon() {
   const searchInput = document.getElementById("searchInputID");
   const searchTerm = searchInput.value.toLowerCase().trim();
   const apiUrl = `https://api.pokemontcg.io/v2/cards?q=name:${searchTerm}`;
+  await cheackIfPokemonFind(apiUrl);
+}
+
+
+
+async function cheackIfPokemonFind(apiUrl) {
   try {
     const response = await fetch(apiUrl);
     const data = await response.json();
     const foundPokemon = data.data[0]; // Wir nehmen das erste gefundene Pokémon, falls vorhanden
     if (foundPokemon) {
       displaySearchedPokemon(foundPokemon);
-    } else {  // Zeige eine Meldung, wenn das gesuchte Pokémon nicht gefunden wurde      
+    } else { // Zeige eine Meldung, wenn das gesuchte Pokémon nicht gefunden wurde      
       alert("Pokémon not found!");
     }
-  } catch (error) {
-    console.error("Error fetching data:", error);
+  } catch (error) {    
     alert("Error fetching data. Please try again later.");
   }
 }
@@ -239,34 +309,63 @@ async function searchPokemon() {
 
 
 function displaySearchedPokemon(pokemon) {
-  const enlargedCardContainer = document.createElement("div");
-  enlargedCardContainer.classList.add("enlarged-card-container");
-  enlargedCardContainer.classList.add("displayFlex");
+  const enlargedCardContainer = createEnlargedContainerForSearchedPokemon();
+  const enlargedCard = createLargedCardForSearchedPokemon(pokemon, enlargedCardContainer);
+  const PricesButton = createPricesButtonForSearchedPokemon(enlargedCardContainer);
+  checkPricesButtonClicked(PricesButton, pokemon);
+  checkEnlargedContainerClicked(enlargedCardContainer, enlargedCard);
+  document.querySelector("body").appendChild(enlargedCardContainer);
+}
 
-  const enlargedCard = document.createElement("div");
-  enlargedCard.classList.add("enlarged-card");
-  enlargedCard.style.backgroundImage = `url(${pokemon.images.large})`;
-  enlargedCardContainer.appendChild(enlargedCard);
 
-  const PricesButton = document.createElement("button");
-  PricesButton.innerText = "Prices";
-  PricesButton.classList.add("prices-button");
-  enlargedCardContainer.appendChild(PricesButton);
-  let statsButtonClicked = false;
-  PricesButton.addEventListener("click", () => {
-    if (!statsButtonClicked) {
-      statsButtonClicked = true;
-      openPrices(pokemon);
-    }
-  });
 
+function checkEnlargedContainerClicked(enlargedCardContainer, enlargedCard) {
   enlargedCardContainer.addEventListener("click", (event) => {
     if (!enlargedCard.contains(event.target)) {
       enlargedCardContainer.remove();
     }
   });
+}
 
-  document.querySelector("body").appendChild(enlargedCardContainer);
+
+
+function checkPricesButtonClicked(PricesButton, pokemon) {
+  let pricesButtonClicked = false;
+  PricesButton.addEventListener("click", () => {
+    if (!pricesButtonClicked) {
+      pricesButtonClicked = true;
+      openPrices(pokemon);
+    }
+  });
+}
+
+
+
+function createPricesButtonForSearchedPokemon(enlargedCardContainer) {
+  const PricesButton = document.createElement("button");
+  PricesButton.innerText = "Prices";
+  PricesButton.classList.add("prices-button");
+  enlargedCardContainer.appendChild(PricesButton);
+  return PricesButton;
+}
+
+
+
+function createLargedCardForSearchedPokemon(pokemon, enlargedCardContainer) {
+  const enlargedCard = document.createElement("div");
+  enlargedCard.classList.add("enlarged-card");
+  enlargedCard.style.backgroundImage = `url(${pokemon.images.large})`;
+  enlargedCardContainer.appendChild(enlargedCard);
+  return enlargedCard;
+}
+
+
+
+function createEnlargedContainerForSearchedPokemon() {
+  const enlargedCardContainer = document.createElement("div");
+  enlargedCardContainer.classList.add("enlarged-card-container");
+  enlargedCardContainer.classList.add("displayFlex");
+  return enlargedCardContainer;
 }
 
 
