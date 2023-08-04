@@ -128,6 +128,7 @@ function createPrevoiusButton(enlargedCardContainer) {
   prevoiusButton.innerText = "Prevoius";
   prevoiusButton.classList.add("prices-button");
   prevoiusButton.id = "prevoiusButtonID"; // Hier wird die ID zugewiesen
+  prevoiusButton.onclick = prevoiusPokemon();
   enlargedCardContainer.appendChild(prevoiusButton);
   return prevoiusButton;
 }
@@ -413,3 +414,24 @@ function stopLoadingAnimation() {
 
 
 
+function prevoiusPokemon() {
+  const pokemonDataInLocalStorage = localStorage.getItem('pokemonData');
+  if (pokemonDataInLocalStorage) {
+    const pokemonData = JSON.parse(pokemonDataInLocalStorage);
+    const index = pokemonData.findIndex(pokemon => pokemon.id === clickedPokemonID);
+    
+    if (index > 0) {
+      const previousPokemon = pokemonData[index - 1];
+      const enlargedCardContainer = createEnlargedContainerForSearchedPokemon();
+      const enlargedCard = createLargedCardForSearchedPokemon(previousPokemon, enlargedCardContainer);
+      const PricesButton = createPricesButtonForSearchedPokemon(enlargedCardContainer);
+      checkPricesButtonClicked(PricesButton, previousPokemon);
+      checkEnlargedContainerClicked(enlargedCardContainer, enlargedCard);
+      document.querySelector("body").appendChild(enlargedCardContainer);
+    } else {
+      alert("This is the first Pokemon. There is no previous Pokemon available.");
+    }
+  } else {
+    alert("Pokemon data is not available in the LocalStorage.");
+  }
+}
