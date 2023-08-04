@@ -229,6 +229,35 @@ header {
   background-color: #4b4592;
 }
 
+.icon {
+  margin-right: 5px;
+  display: none;
+}
+
+.loading {
+  background-color: #4b4592;
+  color: black;
+}
+
+.loading .icon {
+  display: inline-block;
+  color: black;
+  animation: spin 2s linear infinite;
+}
+
+@Keyframes spin {
+  0%
+  {
+    transform: rotate(0deg);
+  }
+  
+  100%
+  {
+    transform: rotate(360deg);
+  }
+  
+}
+
 footer {
   display: flex;
   justify-content: center;

@@ -286,6 +286,7 @@ async function searchPokemon() {
   const searchInput = document.getElementById("searchInputID");
   const searchTerm = searchInput.value.toLowerCase().trim();
   const apiUrl = `https://api.pokemontcg.io/v2/cards?q=name:${searchTerm}`;
+  loadingAnimation ();
   await cheackIfPokemonFind(apiUrl);
 }
 
@@ -346,6 +347,7 @@ function createPricesButtonForSearchedPokemon(enlargedCardContainer) {
   PricesButton.innerText = "Prices";
   PricesButton.classList.add("prices-button");
   enlargedCardContainer.appendChild(PricesButton);
+  stopLoadingAnimation();
   return PricesButton;
 }
 
@@ -366,6 +368,21 @@ function createEnlargedContainerForSearchedPokemon() {
   enlargedCardContainer.classList.add("enlarged-card-container");
   enlargedCardContainer.classList.add("displayFlex");
   return enlargedCardContainer;
+}
+
+
+function loadingAnimation () {
+  document.getElementById('search-buttonID').addEventListener('click', function() {
+    this.classList.add('loading');
+    this.innerHTML = '<span class="icon">&#8635;</span>Searching Pokemon...';
+  });
+}
+
+
+function stopLoadingAnimation() {
+  const searchButton = document.getElementById('search-buttonID')
+  searchButton.classList.remove('loading');
+  searchButton.innerHTML = '<span class="icon">&#128269;</span>Search';
 }
 
 
