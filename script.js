@@ -1,4 +1,6 @@
 let clickedPokemonID = null;  // clicked Pokemon ID
+let isLoading = false;
+
 const loadChartOptions = {
   scales: {
     y: {
@@ -286,8 +288,9 @@ async function searchPokemon() {
   const searchInput = document.getElementById("searchInputID");
   const searchTerm = searchInput.value.toLowerCase().trim();
   const apiUrl = `https://api.pokemontcg.io/v2/cards?q=name:${searchTerm}`;
-  loadingAnimation ();
-  await cheackIfPokemonFind(apiUrl);
+  loadingAnimation (); 
+  await cheackIfPokemonFind(apiUrl);  
+  stopLoadingAnimation()
 }
 
 
@@ -371,18 +374,23 @@ function createEnlargedContainerForSearchedPokemon() {
 }
 
 
-function loadingAnimation () {
-  document.getElementById('search-buttonID').addEventListener('click', function() {
-    this.classList.add('loading');
-    this.innerHTML = '<span class="icon">&#8635;</span>Searching Pokemon...';
-  });
+function loadingAnimation() {
+  const searchButton = document.getElementById('search-buttonID');
+
+  // Überprüfe, ob die Animation bereits läuft, bevor sie gestartet wird
+  if (!isLoading) {
+    searchButton.classList.add('loading');
+    searchButton.innerHTML = '<span class="icon">&#8635;</span>Searching Pokemon...';
+    isLoading = true;
+  }
 }
 
 
 function stopLoadingAnimation() {
-  const searchButton = document.getElementById('search-buttonID')
+  const searchButton = document.getElementById('search-buttonID');
   searchButton.classList.remove('loading');
   searchButton.innerHTML = '<span class="icon">&#128269;</span>Search';
+  isLoading = false;
 }
 
 
