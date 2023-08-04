@@ -306,7 +306,7 @@ async function cheackIfPokemonFind(apiUrl) {
       alert("Pokémon not found!");
     }
   } catch (error) {    
-    alert("Error fetching data. Please try again later.");
+    alert("Please insert Pokemon name here.");
   }
 }
 
@@ -374,11 +374,10 @@ function createEnlargedContainerForSearchedPokemon() {
 }
 
 
-function loadingAnimation() {
-  const searchButton = document.getElementById('search-buttonID');
 
-  // Überprüfe, ob die Animation bereits läuft, bevor sie gestartet wird
-  if (!isLoading) {
+function loadingAnimation() {
+  const searchButton = document.getElementById('search-buttonID');  
+  if (!isLoading) {  // Überprüfe, ob die Animation bereits läuft, bevor sie gestartet wird
     searchButton.classList.add('loading');
     searchButton.innerHTML = '<span class="icon">&#8635;</span>Searching Pokemon...';
     isLoading = true;
@@ -386,15 +385,10 @@ function loadingAnimation() {
 }
 
 
+
 function stopLoadingAnimation() {
   const searchButton = document.getElementById('search-buttonID');
   searchButton.classList.remove('loading');
   searchButton.innerHTML = '<span class="icon">&#128269;</span>Search';
   isLoading = false;
-}
-
-
-
-function clearLocalStorage() {
-  localStorage.clear();
 }
