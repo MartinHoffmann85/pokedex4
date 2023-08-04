@@ -75,10 +75,10 @@ function displayPokemonImage(pokemonData, cardsContainer) {
 
 function handleCardClick(card) {
   clickedPokemonID = card.dataset.pokemonId; // Store the clicked Pokemon ID in the global variable
-  const { enlargedCardContainer, enlargedCard } = createEnlargedContainer(card);
-  const PricesButton = createPricesButton(enlargedCardContainer);
-  let statsButtonClicked = false;
-  statsButtonClicked = checkStatsButtonClicked(PricesButton, statsButtonClicked);
+  const { enlargedCardContainer, enlargedCard } = createEnlargedContainer(card);  
+  const PricesButton = createButtons(enlargedCardContainer);
+  let pricesButtonClicked = false;
+  pricesButtonClicked = checkPricesButtonClicked(PricesButton, pricesButtonClicked);
   enlargedCardContainer.addEventListener("click", (event) => {
     if (!enlargedCard.contains(event.target)) {
       enlargedCardContainer.remove();
@@ -89,7 +89,7 @@ function handleCardClick(card) {
 
 
 
-function checkStatsButtonClicked(PricesButton, statsButtonClicked) {
+function checkPricesButtonClicked(PricesButton, statsButtonClicked) {
   PricesButton.addEventListener("click", () => {
     if (!statsButtonClicked) {
       statsButtonClicked = true;
@@ -116,7 +116,25 @@ function createEnlargedContainer(card) {
 
 
 
-function createPricesButton(enlargedCardContainer) {
+function createButtons(enlargedCardContainer) {
+  createPrevoiusButton(enlargedCardContainer);
+  return createPricesbutton(enlargedCardContainer);
+}
+
+
+
+function createPrevoiusButton(enlargedCardContainer) {
+  const prevoiusButton = document.createElement("button");
+  prevoiusButton.innerText = "Prevoius";
+  prevoiusButton.classList.add("prices-button");
+  prevoiusButton.id = "prevoiusButtonID"; // Hier wird die ID zugewiesen
+  enlargedCardContainer.appendChild(prevoiusButton);
+  return prevoiusButton;
+}
+
+
+
+function createPricesbutton(enlargedCardContainer) {
   const PricesButton = document.createElement("button");
   PricesButton.innerText = "Prices";
   PricesButton.classList.add("prices-button");
@@ -392,3 +410,6 @@ function stopLoadingAnimation() {
   searchButton.innerHTML = '<span class="icon">&#128269;</span>Search';
   isLoading = false;
 }
+
+
+
