@@ -75,21 +75,32 @@ function displayPokemonImage(pokemonData, cardsContainer) {
 
 function handleCardClick(card) {
   clickedPokemonID = card.dataset.pokemonId; // Store the clicked Pokemon ID in the global variable
-  const { enlargedCardContainer, enlargedCard } = createEnlargedContainer(card);  
-  const PricesButton = createButtons(enlargedCardContainer);
-  let pricesButtonClicked = false;
-  pricesButtonClicked = checkPricesButtonClicked(PricesButton, pricesButtonClicked);
+  const { enlargedCardContainer, enlargedCard } = createEnlargedContainer(card);
+  const PricesButton = createPricesButton(enlargedCardContainer);
+  const previousButton = createpreviousButton(enlargedCardContainer);
+  let statsButtonClicked = false;
+  let previousButtonClicked = false;
+
+  statsButtonClicked = checkStatsButtonClicked(PricesButton, statsButtonClicked);
   enlargedCardContainer.addEventListener("click", (event) => {
     if (!enlargedCard.contains(event.target)) {
       enlargedCardContainer.remove();
     }
   });
+
+  previousButtonClicked = checkPreviousButtonClicked(previousButton, previousButtonClicked);
+  enlargedCardContainer.addEventListener("click", (event) => {
+    if (!enlargedCard.contains(event.target)) {
+      enlargedCardContainer.remove();
+    }
+  });
+
   document.querySelector("body").appendChild(enlargedCardContainer);
 }
 
 
 
-function checkPricesButtonClicked(PricesButton, statsButtonClicked) {
+function checkStatsButtonClicked(PricesButton, statsButtonClicked) {
   PricesButton.addEventListener("click", () => {
     if (!statsButtonClicked) {
       statsButtonClicked = true;
@@ -97,6 +108,19 @@ function checkPricesButtonClicked(PricesButton, statsButtonClicked) {
     }
   });
   return statsButtonClicked;
+}
+
+
+
+function checkPreviousButtonClicked(previousButton, previousButtonClicked) {
+  previousButton.addEventListener("click", () => {
+    if (!previousButtonClicked) {
+      previousButtonClicked = true;
+      shoePreviousPokemonSingleCard();  // ????????????
+      console.log('es geht');
+    }
+  });
+  return previousButtonClicked;
 }
 
 
@@ -116,31 +140,22 @@ function createEnlargedContainer(card) {
 
 
 
-function createButtons(enlargedCardContainer) {
-  createPrevoiusButton(enlargedCardContainer);
-  return createPricesbutton(enlargedCardContainer);
-}
-
-
-
-function createPrevoiusButton(enlargedCardContainer) {
-  const prevoiusButton = document.createElement("button");
-  prevoiusButton.innerText = "Prevoius";
-  prevoiusButton.classList.add("prices-button");
-  prevoiusButton.id = "prevoiusButtonID"; // Hier wird die ID zugewiesen
-  prevoiusButton.onclick = prevoiusPokemon();
-  enlargedCardContainer.appendChild(prevoiusButton);
-  return prevoiusButton;
-}
-
-
-
-function createPricesbutton(enlargedCardContainer) {
+function createPricesButton(enlargedCardContainer) {
   const PricesButton = document.createElement("button");
   PricesButton.innerText = "Prices";
   PricesButton.classList.add("prices-button");
   enlargedCardContainer.appendChild(PricesButton);
   return PricesButton;
+}
+
+
+
+function createpreviousButton(enlargedCardContainer) {
+  const previousButton = document.createElement("button");
+  previousButton.innerText = "Previous";
+  previousButton.classList.add("prices-button");
+  enlargedCardContainer.appendChild(previousButton);
+  return previousButton;
 }
 
 
@@ -414,24 +429,22 @@ function stopLoadingAnimation() {
 
 
 
-function prevoiusPokemon() {
-  const pokemonDataInLocalStorage = localStorage.getItem('pokemonData');
-  if (pokemonDataInLocalStorage) {
-    const pokemonData = JSON.parse(pokemonDataInLocalStorage);
-    const index = pokemonData.findIndex(pokemon => pokemon.id === clickedPokemonID);
-    
-    if (index > 0) {
-      const previousPokemon = pokemonData[index - 1];
-      const enlargedCardContainer = createEnlargedContainerForSearchedPokemon();
-      const enlargedCard = createLargedCardForSearchedPokemon(previousPokemon, enlargedCardContainer);
-      const PricesButton = createPricesButtonForSearchedPokemon(enlargedCardContainer);
-      checkPricesButtonClicked(PricesButton, previousPokemon);
-      checkEnlargedContainerClicked(enlargedCardContainer, enlargedCard);
-      document.querySelector("body").appendChild(enlargedCardContainer);
-    } else {
-      alert("This is the first Pokemon. There is no previous Pokemon available.");
-    }
+
+function shoePreviousPokemonSingleCard() {
+  const cardsContainer = document.querySelector('.content');
+  const allCards = Array.from(cardsContainer.querySelectorAll('.card'));
+
+  // Find the index of the clicked card in the array
+  const currentIndex = allCards.findIndex(card => card.dataset.pokemonId === clickedPokemonID);
+
+  // Find the index of the previous card in the array
+  const previousIndex = currentIndex - 1;
+
+  if (previousIndex >= 0) {
+    const previousCard = allCards[previousIndex];
+    handleCardClick(previousCard); // Show the previous card using the existing handleCardClick function
   } else {
-    alert("Pokemon data is not available in the LocalStorage.");
+    // If there is no previous card, show a message or handle it accordingly
+    console.log('No previous card available.');
   }
 }
