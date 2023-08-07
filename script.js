@@ -77,24 +77,19 @@ function handleCardClick(card) {
   clickedPokemonID = card.dataset.pokemonId; // Store the clicked Pokemon ID in the global variable
   const { enlargedCardContainer, enlargedCard } = createEnlargedContainer(card);
   const PricesButton = createPricesButton(enlargedCardContainer);
-  const previousButton = createpreviousButton(enlargedCardContainer);
-  let statsButtonClicked = false;
-  let previousButtonClicked = false;
-
-  statsButtonClicked = checkStatsButtonClicked(PricesButton, statsButtonClicked);
+  const previousButton = createPreviousButton(enlargedCardContainer);
+  const nextButton = createNextButton(enlargedCardContainer);
+  let nextButtonClicked = false;
+  let pricesButtonClicked = false;
+  let previousButtonClicked = false;  
   enlargedCardContainer.addEventListener("click", (event) => {
     if (!enlargedCard.contains(event.target)) {
       enlargedCardContainer.remove();
     }
   });
-
+  pricesButtonClicked = checkStatsButtonClicked(PricesButton, pricesButtonClicked);
   previousButtonClicked = checkPreviousButtonClicked(previousButton, previousButtonClicked);
-  enlargedCardContainer.addEventListener("click", (event) => {
-    if (!enlargedCard.contains(event.target)) {
-      enlargedCardContainer.remove();
-    }
-  });
-
+  nextButtonClicked = checkNextButtonClicked(nextButton, nextButtonClicked);
   document.querySelector("body").appendChild(enlargedCardContainer);
 }
 
@@ -116,13 +111,23 @@ function checkPreviousButtonClicked(previousButton, previousButtonClicked) {
   previousButton.addEventListener("click", () => {
     if (!previousButtonClicked) {
       previousButtonClicked = true;
-      shoePreviousPokemonSingleCard();  // ????????????
-      console.log('es geht');
+      showPreviousPokemonSingleCard();
     }
   });
   return previousButtonClicked;
 }
 
+
+
+function checkNextButtonClicked(nextButton, nextButtonClicked) {
+  nextButton.addEventListener("click", () => {
+    if (!nextButtonClicked) {
+      nextButtonClicked = true;
+      showNextPokemonSingleCard();
+    }
+  });
+  return nextButtonClicked;
+}
 
 
 function createEnlargedContainer(card) {
@@ -150,12 +155,22 @@ function createPricesButton(enlargedCardContainer) {
 
 
 
-function createpreviousButton(enlargedCardContainer) {
+function createPreviousButton(enlargedCardContainer) {
   const previousButton = document.createElement("button");
   previousButton.innerText = "Previous";
   previousButton.classList.add("prices-button");
   enlargedCardContainer.appendChild(previousButton);
   return previousButton;
+}
+
+
+
+function createNextButton(enlargedCardContainer) {
+  const nextButton = document.createElement("button");
+  nextButton.innerText = "Next";
+  nextButton.classList.add("prices-button");
+  enlargedCardContainer.appendChild(nextButton);
+  return nextButton;
 }
 
 
@@ -430,7 +445,7 @@ function stopLoadingAnimation() {
 
 
 
-function shoePreviousPokemonSingleCard() {
+function showPreviousPokemonSingleCard() {
   const cardsContainer = document.querySelector('.content');
   const allCards = Array.from(cardsContainer.querySelectorAll('.card'));
 
@@ -445,6 +460,28 @@ function shoePreviousPokemonSingleCard() {
     handleCardClick(previousCard); // Show the previous card using the existing handleCardClick function
   } else {
     // If there is no previous card, show a message or handle it accordingly
-    console.log('No previous card available.');
+    alert('No previous card available.');
+  }
+}
+
+
+
+
+function showNextPokemonSingleCard() {
+  const cardsContainer = document.querySelector('.content');
+  const allCards = Array.from(cardsContainer.querySelectorAll('.card'));
+
+  // Find the index of the clicked card in the array
+  const currentIndex = allCards.findIndex(card => card.dataset.pokemonId === clickedPokemonID);
+
+  // Find the index of the previous card in the array
+  const previousIndex = currentIndex + 1;
+
+  if (previousIndex >= 0) {
+    const previousCard = allCards[previousIndex];
+    handleCardClick(previousCard); // Show the previous card using the existing handleCardClick function
+  } else {
+    // If there is no previous card, show a message or handle it accordingly
+    alert('No next card available.');
   }
 }
