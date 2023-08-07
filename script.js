@@ -24,12 +24,12 @@ async function init() {
 
 
 async function fetchAndDisplayPokemonImage() {  // Function to fetch Pokemon data from the API and display cards with images  
-  const pokemonDataInLocalStorage = localStorage.getItem('pokemonData'); // Überprüfen, ob die Pokemon-Daten bereits im LocalStorage vorhanden sind
-  if (pokemonDataInLocalStorage) {  // Wenn die Daten bereits im LocalStorage vorhanden sind, rufe sie ab und zeige sie an    
+  const pokemonDataInLocalStorage = localStorage.getItem('pokemonData'); // Check if the Pokemon data is already available in the LocalStorage
+  if (pokemonDataInLocalStorage) {  // If the data is already available in the LocalStorage, retrieve and display it    
     const pokemonData = JSON.parse(pokemonDataInLocalStorage);
     const cardsContainer = document.querySelector('.content');
     displayPokemonImage(pokemonData, cardsContainer);
-  } else {  // Wenn die Daten nicht im LocalStorage vorhanden sind, rufe sie von der API ab    
+  } else {  // If the data is not available in the LocalStorage, fetch it from the API    
     await fetchPokemonJsonFromUrl();
   }
 }
@@ -62,12 +62,18 @@ function displayPokemonImage(pokemonData, cardsContainer) {
       handleCardClick(card);
     });
     cardsContainer.appendChild(card);
-    VanillaTilt.init(card, {
-      max: 25,
-      speed: 400,
-      glare: true,
-      "max-glare": 0.5,
-    });
+    vanillaTiltFunction(card);
+  });
+}
+
+
+
+function vanillaTiltFunction(card) {
+  VanillaTilt.init(card, {
+    max: 25,
+    speed: 400,
+    glare: true,
+    "max-glare": 0.5,
   });
 }
 
@@ -76,21 +82,27 @@ function displayPokemonImage(pokemonData, cardsContainer) {
 function handleCardClick(card) {
   clickedPokemonID = card.dataset.pokemonId; // Store the clicked Pokemon ID in the global variable
   const { enlargedCardContainer, enlargedCard } = createEnlargedContainer(card);
-  const PricesButton = createPricesButton(enlargedCardContainer);
-  const previousButton = createPreviousButton(enlargedCardContainer);
-  const nextButton = createNextButton(enlargedCardContainer);
-  let nextButtonClicked = false;
-  let pricesButtonClicked = false;
-  let previousButtonClicked = false;  
+  createButtonsAndHandleClick(enlargedCardContainer);
   enlargedCardContainer.addEventListener("click", (event) => {
     if (!enlargedCard.contains(event.target)) {
       enlargedCardContainer.remove();
     }
-  });
-  pricesButtonClicked = checkStatsButtonClicked(PricesButton, pricesButtonClicked);
+  });  
+  document.querySelector("body").appendChild(enlargedCardContainer);
+}
+
+
+
+function createButtonsAndHandleClick(enlargedCardContainer) {
+  const pricesButton = createPricesButton(enlargedCardContainer);
+  const previousButton = createPreviousButton(enlargedCardContainer);
+  const nextButton = createNextButton(enlargedCardContainer);
+  let nextButtonClicked = false;
+  let pricesButtonClicked = false;
+  let previousButtonClicked = false;
+  pricesButtonClicked = checkStatsButtonClicked(pricesButton, pricesButtonClicked);
   previousButtonClicked = checkPreviousButtonClicked(previousButton, previousButtonClicked);
   nextButtonClicked = checkNextButtonClicked(nextButton, nextButtonClicked);
-  document.querySelector("body").appendChild(enlargedCardContainer);
 }
 
 
@@ -130,6 +142,7 @@ function checkNextButtonClicked(nextButton, nextButtonClicked) {
 }
 
 
+
 function createEnlargedContainer(card) {
   const enlargedCardContainer = document.createElement("div");
   enlargedCardContainer.classList.add("enlarged-card-container");
@@ -157,7 +170,7 @@ function createPricesButton(enlargedCardContainer) {
 
 function createPreviousButton(enlargedCardContainer) {
   const previousButton = document.createElement("button");
-  previousButton.innerText = "Previous";
+  previousButton.innerText = "< Previous";
   previousButton.classList.add("prices-button");
   enlargedCardContainer.appendChild(previousButton);
   return previousButton;
@@ -167,7 +180,7 @@ function createPreviousButton(enlargedCardContainer) {
 
 function createNextButton(enlargedCardContainer) {
   const nextButton = document.createElement("button");
-  nextButton.innerText = "Next";
+  nextButton.innerText = "Next >";
   nextButton.classList.add("prices-button");
   enlargedCardContainer.appendChild(nextButton);
   return nextButton;
@@ -179,7 +192,7 @@ function openPrices() {
   const contentContainer = createContentContainer();
   const newCard = createNewCard(contentContainer); 
   createBackButton(contentContainer);
-  fetchAndDisplayPrices(clickedPokemonID, newCard); // Hier wird die Funktion aufgerufen, um die Preise abzurufen und anzuzeigen
+  fetchAndDisplayPrices(clickedPokemonID, newCard); // Here, the function is called to retrieve and display the prices
 }
 
 
@@ -210,7 +223,7 @@ function createNewCard(contentContainer) {
 
 function createContentContainer() {
   const contentContainer = document.querySelector(".content");
-  contentContainer.classList.add("open-stats"); // Füge die Klasse "open-stats" hinzu, um das Hintergrundbild zu entfernen
+  contentContainer.classList.add("open-stats"); // Add the class "open-stats" to remove the background image
   contentContainer.classList.add("vh100");
   contentContainer.classList.add("displayFlex");
   contentContainer.innerHTML = "";
@@ -230,8 +243,8 @@ function backButtonHandler() {
   } else {
     fetchAndDisplayPokemonImage();    
   }    
-  contentContainer.classList.remove('displayFlex'); // Entfernt die Klasse "displayFlex" vom Container "content"
-  contentContainer.classList.remove('open-stats');  // Entfernt die Klasse "displayFlex" vom Container "content"
+  contentContainer.classList.remove('displayFlex'); // Remove the class "displayFlex" from the container "content."
+  contentContainer.classList.remove('open-stats');  // Remove the class "open-stats" from the container "content."
 }
 
 
@@ -302,9 +315,9 @@ function checkPricesDirectLow(prices, newCard) {
 
 
 function createCanvas(newCard) {
-  const canvas = document.createElement('canvas'); // Erstelle ein Canvas-Element für das Balkendiagramm
-  canvas.width = 400; // Breite des Diagramms (kann angepasst werden)
-  canvas.height = 200; // Höhe des Diagramms (kann angepasst werden)
+  const canvas = document.createElement('canvas'); // Create a canvas element for the bar chart
+  canvas.width = 400; // Width of the chart
+  canvas.height = 200; // height of the chart
   newCard.appendChild(canvas);
   return canvas;
 }
@@ -348,10 +361,10 @@ async function cheackIfPokemonFind(apiUrl) {
   try {
     const response = await fetch(apiUrl);
     const data = await response.json();
-    const foundPokemon = data.data[0]; // Wir nehmen das erste gefundene Pokémon, falls vorhanden
+    const foundPokemon = data.data[0]; // We'll take the first found Pokémon, if available
     if (foundPokemon) {
       displaySearchedPokemon(foundPokemon);
-    } else { // Zeige eine Meldung, wenn das gesuchte Pokémon nicht gefunden wurde      
+    } else { // Display a message if the requested Pokémon was not found      
       alert("Pokémon not found!");
     }
   } catch (error) {    
@@ -426,7 +439,7 @@ function createEnlargedContainerForSearchedPokemon() {
 
 function loadingAnimation() {
   const searchButton = document.getElementById('search-buttonID');  
-  if (!isLoading) {  // Überprüfe, ob die Animation bereits läuft, bevor sie gestartet wird
+  if (!isLoading) {  // Check if the animation is already running before starting it
     searchButton.classList.add('loading');
     searchButton.innerHTML = '<span class="icon">&#8635;</span>Searching Pokemon...';
     isLoading = true;
@@ -444,44 +457,24 @@ function stopLoadingAnimation() {
 
 
 
-
 function showPreviousPokemonSingleCard() {
   const cardsContainer = document.querySelector('.content');
-  const allCards = Array.from(cardsContainer.querySelectorAll('.card'));
+  const allCards = Array.from(cardsContainer.querySelectorAll('.card'));  
+  const currentIndex = allCards.findIndex(card => card.dataset.pokemonId === clickedPokemonID);  // Find the index of the clicked card in the array  
+  const previousIndex = (currentIndex - 1 + allCards.length) % allCards.length;  // Calculate the previous index in a circular manner
 
-  // Find the index of the clicked card in the array
-  const currentIndex = allCards.findIndex(card => card.dataset.pokemonId === clickedPokemonID);
-
-  // Find the index of the previous card in the array
-  const previousIndex = currentIndex - 1;
-
-  if (previousIndex >= 0) {
-    const previousCard = allCards[previousIndex];
-    handleCardClick(previousCard); // Show the previous card using the existing handleCardClick function
-  } else {
-    // If there is no previous card, show a message or handle it accordingly
-    alert('No previous card available.');
-  }
+  const previousCard = allCards[previousIndex];
+  handleCardClick(previousCard); // Show the previous card using the existing handleCardClick function
 }
-
 
 
 
 function showNextPokemonSingleCard() {
   const cardsContainer = document.querySelector('.content');
-  const allCards = Array.from(cardsContainer.querySelectorAll('.card'));
+  const allCards = Array.from(cardsContainer.querySelectorAll('.card'));  
+  const currentIndex = allCards.findIndex(card => card.dataset.pokemonId === clickedPokemonID);  // Find the index of the clicked card in the array  
+  const nextIndex = (currentIndex + 1) % allCards.length;  // Calculate the next index in a circular manner
 
-  // Find the index of the clicked card in the array
-  const currentIndex = allCards.findIndex(card => card.dataset.pokemonId === clickedPokemonID);
-
-  // Find the index of the previous card in the array
-  const previousIndex = currentIndex + 1;
-
-  if (previousIndex >= 0) {
-    const previousCard = allCards[previousIndex];
-    handleCardClick(previousCard); // Show the previous card using the existing handleCardClick function
-  } else {
-    // If there is no previous card, show a message or handle it accordingly
-    alert('No next card available.');
-  }
+  const nextCard = allCards[nextIndex];
+  handleCardClick(nextCard); // Show the next card using the existing handleCardClick function
 }
