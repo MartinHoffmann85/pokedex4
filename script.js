@@ -1,6 +1,7 @@
 let clickedPokemonID = null;  // clicked Pokemon ID
 let isLoading = false;
 
+
 const loadChartOptions = {
   scales: {
     y: {
@@ -16,9 +17,11 @@ const loadChartOptions = {
 
 async function init() {
   const loadingScreen = document.getElementById('loadingScreen');
-  loadingScreen.style.display = 'block'; // Show the loading screen
-  await fetchAndDisplayPokemonImage();
-  loadingScreen.style.display = 'none'; // Hide the loading screen once the content is ready  
+  loadingScreen.style.display = 'block'; // Show the loading screen  
+  const minimumDuration = 7000; // 7 seconds in milliseconds, Set a minimum duration of 7 seconds
+  const fetchAndDisplayPromise = fetchAndDisplayPokemonImage(); // Assuming fetchAndDisplayPokemonImage() returns a Promise  
+  await Promise.all([fetchAndDisplayPromise, new Promise(resolve => setTimeout(resolve, minimumDuration))]);  // Wait for both the fetch and the minimum duration
+  loadingScreen.style.display = 'none'; // Hide the loading screen once the content is ready
 }
 
 
@@ -28,7 +31,7 @@ async function fetchAndDisplayPokemonImage() {  // Function to fetch Pokemon dat
   if (pokemonDataInLocalStorage) {  // If the data is already available in the LocalStorage, retrieve and display it    
     const pokemonData = JSON.parse(pokemonDataInLocalStorage);
     const cardsContainer = document.querySelector('.content');
-    displayPokemonImage(pokemonData, cardsContainer);
+    displayPokemonImages(pokemonData, cardsContainer);
   } else {  // If the data is not available in the LocalStorage, fetch it from the API    
     await fetchPokemonJsonFromUrl();
   }
@@ -44,7 +47,7 @@ async function fetchPokemonJsonFromUrl() {
     const pokemonData = data.data.slice(0, 100);
     localStorage.setItem('pokemonData', JSON.stringify(pokemonData)); // Save the Pokemon-Data in LocalStorage  
     const cardsContainer = document.querySelector('.content');
-    displayPokemonImage(pokemonData, cardsContainer);
+    displayPokemonImages(pokemonData, cardsContainer);
   } catch (error) {
     console.error('Error fetching data:', error);
   }
@@ -52,7 +55,7 @@ async function fetchPokemonJsonFromUrl() {
 
 
 
-function displayPokemonImage(pokemonData, cardsContainer) {
+function displayPokemonImages(pokemonData, cardsContainer) {
   pokemonData.forEach((pokemon) => {
     const card = document.createElement('div');
     card.classList.add("card");
@@ -240,7 +243,7 @@ function backButtonHandler() {
   const pokemonDataInLocalStorage = localStorage.getItem('pokemonData');
   if (pokemonDataInLocalStorage) {
     const pokemonData = JSON.parse(pokemonDataInLocalStorage);
-    displayPokemonImage(pokemonData, contentContainer);
+    displayPokemonImages(pokemonData, contentContainer);
   } else {
     fetchAndDisplayPokemonImage();    
   }    
@@ -419,21 +422,21 @@ function createPricesButtonForSearchedPokemon(enlargedCardContainer) {
 
 
 
+function createEnlargedContainerForSearchedPokemon() {
+  const enlargedCardContainer = document.createElement("div");
+  enlargedCardContainer.classList.add("enlarged-card-container");
+  enlargedCardContainer.classList.add("displayFlex");
+  return enlargedCardContainer;
+}
+
+
+
 function createLargedCardForSearchedPokemon(pokemon, enlargedCardContainer) {
   const enlargedCard = document.createElement("div");
   enlargedCard.classList.add("enlarged-card");
   enlargedCard.style.backgroundImage = `url(${pokemon.images.large})`;
   enlargedCardContainer.appendChild(enlargedCard);
   return enlargedCard;
-}
-
-
-
-function createEnlargedContainerForSearchedPokemon() {
-  const enlargedCardContainer = document.createElement("div");
-  enlargedCardContainer.classList.add("enlarged-card-container");
-  enlargedCardContainer.classList.add("displayFlex");
-  return enlargedCardContainer;
 }
 
 

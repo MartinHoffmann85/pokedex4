@@ -299,6 +299,7 @@ footer {
   margin-bottom: 40px;
 }
 
+
 /*Remove the background image from .card:after if the "open-stats" class is present */
 .open-stats .card:after {
   background-image: none;
@@ -333,6 +334,8 @@ footer {
 
 
 /* Animations */
+
+/* StarSparkle animation */
 @keyframes starSparkle {
   0%,
   5% {
@@ -346,6 +349,7 @@ footer {
   }
 }
 
+/* Hologramm hover efect animation */
 @keyframes holoGradient {
   0%,
   100% {
@@ -371,19 +375,7 @@ footer {
   }
 }
 
-@keyframes cardTransformRotate {
-  0%,
-  100% {
-    transform: none;
-  }
-  25% {
-    transform: rotateZ(-3deg) rotateX(-7deg) rotateY(6deg);
-  }
-  66% {
-    transform: rotateZ(3deg) rotateX(7deg) rotateY(-6deg);
-  }
-}
-
+/* Spin animation vor searching pokemon button */
 @keyframes spin {
   0%
   {
