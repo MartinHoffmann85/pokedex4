@@ -26,7 +26,7 @@ header {
   width: 300px;
 }
 
-/* Content / Card */
+/* Content Card */
 .content {
   position: relative;  
   background-color: #211799;
@@ -69,18 +69,18 @@ header {
     115deg,
     transparent 0%,
     transparent 20%,
-    rgba(0, 231, 255, 0.9) 40%,  /* Anpassung der Verlaufspunkte */
-    rgba(255, 0, 231, 0.9) 60%,  /* Anpassung der Verlaufspunkte und Opazität */
-    transparent 80%,  /* Anpassung der Verlaufspunkte und Opazität */
-    transparent 100%  /* Anpassung der Verlaufspunkte */ 
+    rgba(0, 231, 255, 0.9) 40%,  /* Adjustment of the gradient points */
+    rgba(255, 0, 231, 0.9) 60%,  /* Adjustment of the gradient points and opacity */
+    transparent 80%,  /* Adjustment of gradient points and opacity */
+    transparent 100%  /* Adjustment of gradient points */ 
   );
 }
 
 .card.active:after {
   opacity: 1;
-  background-size: 120%; /* Vergrößere den Halo-Effekt */
-  left: -10%; /* Verschiebe den Halo-Effekt nach links */
-  top: -10%; /* Verschiebe den Halo-Effekt nach oben */
+  background-size: 120%; /* Increase the halo effect */
+  left: -10%; /* Move the halo effect to the left */
+  top: -10%; /* Move the halo effect to the right */
 }
 
 .card:before,
@@ -93,8 +93,7 @@ header {
   bottom: 0;
   background-position: 10% 10%;
   background-repeat: no-repeat;
-  background-size: 200% 200%;
-  /* mix-blend-mode: color-dodge; */
+  background-size: 200% 200%;  
   opacity: 0.9;
   z-index: 1;
   animation: holoGradient 3s ease infinite;
@@ -245,19 +244,8 @@ header {
   animation: spin 2s linear infinite;
 }
 
-@Keyframes spin {
-  0%
-  {
-    transform: rotate(0deg);
-  }
-  
-  100%
-  {
-    transform: rotate(360deg);
-  }
-  
-}
 
+/* Footer */
 footer {
   display: flex;
   justify-content: center;
@@ -291,6 +279,8 @@ footer {
   background-color: rgb(185, 184, 184);
 }
 
+
+/* Generel classes */
 .displayFlex {
   display: flex;
   flex-direction: column;
@@ -305,13 +295,40 @@ footer {
   color: black;
 }
 
-/* Entferne das Hintergrundbild von .card:after, wenn die Klasse "open-stats" vorhanden ist */
+.marginBottom40px {
+  margin-bottom: 40px;
+}
+
+/*Remove the background image from .card:after if the "open-stats" class is present */
 .open-stats .card:after {
   background-image: none;
 }
 
 .open-stats .card:hover:before {
   opacity: 0;
+}
+
+
+/* Loading screen styles */
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("./img/pokemon-background-desktop-1600x900.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.loading-text {
+  text-align: start;
+  font-size: 48px;
+  color: #211799;
 }
 
 
@@ -367,6 +384,21 @@ footer {
   }
 }
 
+@keyframes spin {
+  0%
+  {
+    transform: rotate(0deg);
+  }
+  
+  100%
+  {
+    transform: rotate(360deg);
+  }
+  
+}
+
+
+/* Responsive */
 @media (max-width: 600px) {
   .enlarged-card {
     width: 250px; 
@@ -377,28 +409,4 @@ footer {
     width: 250px; 
     height: 350px;
   }
-}
-
-
-
-/* Loading screen styles */
-.loading-screen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url("./img/pokemon-background-desktop-1600x900.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-
-.loading-text {
-  text-align: start;
-  font-size: 48px;
-  color: #211799;
 }

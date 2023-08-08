@@ -182,6 +182,7 @@ function createNextButton(enlargedCardContainer) {
   const nextButton = document.createElement("button");
   nextButton.innerText = "Next >";
   nextButton.classList.add("prices-button");
+  nextButton.classList.add("marginBottom40px");
   enlargedCardContainer.appendChild(nextButton);
   return nextButton;
 }
