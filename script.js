@@ -355,11 +355,15 @@ function drawPricesChart(canvas, chartData, chartOptions) {
 
 async function searchPokemon() {
   const searchInput = document.getElementById("searchInputID");
-  const searchTerm = searchInput.value.toLowerCase().trim();
-  const apiUrl = `https://api.pokemontcg.io/v2/cards?q=name:${searchTerm}`;
-  loadingAnimation (); 
-  await cheackIfPokemonFind(apiUrl);  
-  stopLoadingAnimation()
+  const searchTerm = searchInput.value.toLowerCase().trim();  
+  if (searchTerm.length < 3) {
+    alert("Der Suchbegriff muss mindestens 3 Zeichen lang sein.");
+    return;
+  }
+    const apiUrl = `https://api.pokemontcg.io/v2/cards?q=name:*${searchTerm}*`;  
+  loadingAnimation();
+  await cheackIfPokemonFind(apiUrl);
+  stopLoadingAnimation();
 }
 
 
