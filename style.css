@@ -166,6 +166,11 @@ header {
   animation: none !important;  
 }
 
+.button-container {
+  display: flex;
+  gap: 20px;
+}
+
 .prices-button {
   padding: 10px 20px;
   font-size: 16px;
@@ -295,10 +300,6 @@ footer {
   color: black;
 }
 
-.marginBottom40px {
-  margin-bottom: 40px;
-}
-
 
 /*Remove the background image from .card:after if the "open-stats" class is present */
 .open-stats .card:after {
@@ -401,4 +402,24 @@ footer {
     width: 250px; 
     height: 350px;
   }
+}
+
+
+
+
+/* Ändern der Farbe des Scrollbalkens */
+::-webkit-scrollbar {
+  width: 12px; /* Breite des Scrollbalkens */
+  background-color: #f1f1f1; /* Hintergrundfarbe des Scrollbalkens */
+}
+
+/* Ändern der Farbe des Scrollbalken-Daumens (der bewegliche Teil des Scrollbalkens) */
+::-webkit-scrollbar-thumb {
+  background-color: #FFCE31; /* Farbe des Scrollbalken-Daumens */
+  border-radius: 6px; /* Abrundung des Daumens */
+}
+
+/* Ändern der Farbe des Scrollbalken-Tracks (der nicht bewegliche Teil des Scrollbalkens) */
+::-webkit-scrollbar-track {
+  background-color: #f1f1f1; /* Farbe des Track */
 }

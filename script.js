@@ -2,6 +2,7 @@ let clickedPokemonID = null;  // clicked Pokemon ID
 let isLoading = false;
 
 
+
 const loadChartOptions = {
   scales: {
     y: {
@@ -97,9 +98,12 @@ function handleCardClick(card) {
 
 
 function createButtonsAndHandleClick(enlargedCardContainer) {
-  const pricesButton = createPricesButton(enlargedCardContainer);
-  const previousButton = createPreviousButton(enlargedCardContainer);
-  const nextButton = createNextButton(enlargedCardContainer);
+  const buttonContainer = document.createElement("div");
+  buttonContainer.classList.add("button-container"); // Fügen Sie eine CSS-Klasse für das Flexbox-Layout hinzu
+  const previousButton = createPreviousButton(buttonContainer);
+  const pricesButton = createPricesButton(buttonContainer);  
+  const nextButton = createNextButton(buttonContainer);
+  enlargedCardContainer.appendChild(buttonContainer);
   let nextButtonClicked = false;
   let pricesButtonClicked = false;
   let previousButtonClicked = false;
@@ -173,7 +177,7 @@ function createPricesButton(enlargedCardContainer) {
 
 function createPreviousButton(enlargedCardContainer) {
   const previousButton = document.createElement("button");
-  previousButton.innerText = "< Previous";
+  previousButton.innerText = "<";
   previousButton.classList.add("prices-button");
   enlargedCardContainer.appendChild(previousButton);
   return previousButton;
@@ -183,9 +187,8 @@ function createPreviousButton(enlargedCardContainer) {
 
 function createNextButton(enlargedCardContainer) {
   const nextButton = document.createElement("button");
-  nextButton.innerText = "Next >";
-  nextButton.classList.add("prices-button");
-  nextButton.classList.add("marginBottom40px");
+  nextButton.innerText = ">";
+  nextButton.classList.add("prices-button");  
   enlargedCardContainer.appendChild(nextButton);
   return nextButton;
 }
