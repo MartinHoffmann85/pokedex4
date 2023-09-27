@@ -1,6 +1,7 @@
 let clickedPokemonID = null;  // clicked Pokemon ID
 let isLoading = false;
-
+let startIndex = 0;  // Startindex for loaded Pokemons
+let endIndex = 100;   // Endindex for loaded Pokemons
 
 
 const loadChartOptions = {
@@ -18,11 +19,12 @@ const loadChartOptions = {
 
 async function init() {
   const loadingScreen = document.getElementById('loadingScreen');
-  loadingScreen.style.display = 'block'; // Show the loading screen  
+  loadingScreen.style.display = 'block'; // Show the loading screen
   const minimumDuration = 7000; // 7 seconds in milliseconds, Set a minimum duration of 7 seconds
-  const fetchAndDisplayPromise = fetchAndDisplayPokemonImage(); // Assuming fetchAndDisplayPokemonImage() returns a Promise  
-  await Promise.all([fetchAndDisplayPromise, new Promise(resolve => setTimeout(resolve, minimumDuration))]);  // Wait for both the fetch and the minimum duration
-  loadingScreen.style.display = 'none'; // Hide the loading screen once the content is ready
+  await fetchPokemonJsonFromUrl(); // Fetch 100 Pokémon data
+  setTimeout(() => {
+    loadingScreen.style.display = 'none'; // Hide the loading screen once the content is ready
+  }, minimumDuration);
 }
 
 
@@ -45,10 +47,10 @@ async function fetchPokemonJsonFromUrl() {
   try {
     const response = await fetch(apiUrl);
     const data = await response.json();
-    const pokemonData = data.data.slice(0, 100);
-    localStorage.setItem('pokemonData', JSON.stringify(pokemonData)); // Save the Pokemon-Data in LocalStorage  
-    const cardsContainer = document.querySelector('.content');
-    displayPokemonImages(pokemonData, cardsContainer);
+    const pokemonData = data.data.slice(startIndex, endIndex);  // Load the first 100 Pokémon
+    localStorage.setItem('pokemonData', JSON.stringify(pokemonData)); // Save the Pokemon-Data in LocalStorage
+    const cardsContainer = document.querySelector('.content'); // Manipulate the 'content' to show the Pokemon Cards
+    displayPokemonImages(pokemonData, cardsContainer); // Render 100 Pokemon
   } catch (error) {
     console.error('Error fetching data:', error);
   }
@@ -56,7 +58,7 @@ async function fetchPokemonJsonFromUrl() {
 
 
 
-function displayPokemonImages(pokemonData, cardsContainer) {
+function displayPokemonImages(pokemonData, cardsContainer) { // Display the Pokemon image and handle the click, add vanillatilt function
   pokemonData.forEach((pokemon) => {
     const card = document.createElement('div');
     card.classList.add("card");
@@ -68,6 +70,28 @@ function displayPokemonImages(pokemonData, cardsContainer) {
     cardsContainer.appendChild(card);
     vanillaTiltFunction(card);
   });
+}
+
+
+
+async function loadMorePokemons() {
+  if (isLoading) return;  // Don't load more if already loading
+  
+  const apiUrl = 'https://api.pokemontcg.io/v2/cards';
+  try {
+    isLoading = true; // Set loading flag
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+    const morePokemonData = data.data.slice(endIndex, endIndex + 10);  // Load 10 more Pokémon
+    endIndex += 10;  // Update the endIndex for the next load
+
+    const cardsContainer = document.querySelector('.content');
+    displayPokemonImages(morePokemonData, cardsContainer);
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  } finally {
+    isLoading = false; // Reset loading flag
+  }
 }
 
 
