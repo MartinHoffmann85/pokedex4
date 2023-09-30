@@ -3,7 +3,6 @@ let isLoading = false;
 let startIndex = 0;  // Startindex for loaded Pokemons
 let endIndex = 100;   // Endindex for loaded Pokemons
 
-
 const loadChartOptions = {
   scales: {
     y: {
@@ -15,8 +14,6 @@ const loadChartOptions = {
   }
 };
 
-
-
 async function init() {
   const loadingScreen = document.getElementById('loadingScreen');
   loadingScreen.style.display = 'block'; // Show the loading screen
@@ -26,8 +23,6 @@ async function init() {
     loadingScreen.style.display = 'none'; // Hide the loading screen once the content is ready
   }, minimumDuration);
 }
-
-
 
 async function fetchAndDisplayPokemonImage() {  // Function to fetch Pokemon data from the API and display cards with images  
   const pokemonDataInLocalStorage = localStorage.getItem('pokemonData'); // Check if the Pokemon data is already available in the LocalStorage
@@ -39,8 +34,6 @@ async function fetchAndDisplayPokemonImage() {  // Function to fetch Pokemon dat
     await fetchPokemonJsonFromUrl();
   }
 }
-
-
 
 async function fetchPokemonJsonFromUrl() {
   const apiUrl = 'https://api.pokemontcg.io/v2/cards';
@@ -56,8 +49,6 @@ async function fetchPokemonJsonFromUrl() {
   }
 }
 
-
-
 function displayPokemonImages(pokemonData, cardsContainer) { // Display the Pokemon image and handle the click, add vanillatilt function
   pokemonData.forEach((pokemon) => {
     const card = document.createElement('div');
@@ -72,8 +63,6 @@ function displayPokemonImages(pokemonData, cardsContainer) { // Display the Poke
   });
 }
 
-
-
 async function loadMorePokemons() {
   loadingAnimationMorePokemon();
   const apiUrl = 'https://api.pokemontcg.io/v2/cards';    
@@ -86,9 +75,6 @@ async function loadMorePokemons() {
   stopLoadingAnimationMorePokemon();
 }
 
-
-
-
 function vanillaTiltFunction(card) {
   VanillaTilt.init(card, {
     max: 25,
@@ -97,8 +83,6 @@ function vanillaTiltFunction(card) {
     "max-glare": 0.5,
   });
 }
-
-
 
 function handleCardClick(card) {
   clickedPokemonID = card.dataset.pokemonId; // Store the clicked Pokemon ID in the global variable
@@ -111,8 +95,6 @@ function handleCardClick(card) {
   });  
   document.querySelector("body").appendChild(enlargedCardContainer);
 }
-
-
 
 function createButtonsAndHandleClick(enlargedCardContainer) {
   const buttonContainer = document.createElement("div");
@@ -129,8 +111,6 @@ function createButtonsAndHandleClick(enlargedCardContainer) {
   nextButtonClicked = checkNextButtonClicked(nextButton, nextButtonClicked);
 }
 
-
-
 function checkStatsButtonClicked(PricesButton, statsButtonClicked) {
   PricesButton.addEventListener("click", () => {
     if (!statsButtonClicked) {
@@ -140,8 +120,6 @@ function checkStatsButtonClicked(PricesButton, statsButtonClicked) {
   });
   return statsButtonClicked;
 }
-
-
 
 function checkPreviousButtonClicked(previousButton, previousButtonClicked) {
   previousButton.addEventListener("click", () => {
@@ -153,8 +131,6 @@ function checkPreviousButtonClicked(previousButton, previousButtonClicked) {
   return previousButtonClicked;
 }
 
-
-
 function checkNextButtonClicked(nextButton, nextButtonClicked) {
   nextButton.addEventListener("click", () => {
     if (!nextButtonClicked) {
@@ -164,8 +140,6 @@ function checkNextButtonClicked(nextButton, nextButtonClicked) {
   });
   return nextButtonClicked;
 }
-
-
 
 function createEnlargedContainer(card) {
   const enlargedCardContainer = document.createElement("div");
@@ -180,8 +154,6 @@ function createEnlargedContainer(card) {
   return { enlargedCardContainer, enlargedCard };
 }
 
-
-
 function createPricesButton(enlargedCardContainer) {
   const PricesButton = document.createElement("button");
   PricesButton.innerText = "Prices";
@@ -189,8 +161,6 @@ function createPricesButton(enlargedCardContainer) {
   enlargedCardContainer.appendChild(PricesButton);
   return PricesButton;
 }
-
-
 
 function createPreviousButton(enlargedCardContainer) {
   const previousButton = document.createElement("button");
@@ -200,8 +170,6 @@ function createPreviousButton(enlargedCardContainer) {
   return previousButton;
 }
 
-
-
 function createNextButton(enlargedCardContainer) {
   const nextButton = document.createElement("button");
   nextButton.innerText = ">";
@@ -210,16 +178,12 @@ function createNextButton(enlargedCardContainer) {
   return nextButton;
 }
 
-
-
 function openPrices() {
   const contentContainer = createContentContainer();
   const newCard = createNewCard(contentContainer); 
   createBackButton(contentContainer);
   fetchAndDisplayPrices(clickedPokemonID, newCard); // Here, the function is called to retrieve and display the prices
 }
-
-
 
 function createBackButton(contentContainer) {
   const backButton = document.createElement("button");
@@ -228,8 +192,6 @@ function createBackButton(contentContainer) {
   contentContainer.appendChild(backButton);
   backButton.addEventListener("click", backButtonHandler);
 }
-
-
 
 function createNewCard(contentContainer) {
   const newCard = document.createElement("div");
@@ -243,22 +205,18 @@ function createNewCard(contentContainer) {
   return newCard;
 }
 
-
-
 function createContentContainer() {
   const contentContainer = document.querySelector(".content");
   contentContainer.classList.add("open-stats"); // Add the class "open-stats" to remove the background image
-  contentContainer.classList.add("vh100");
+  contentContainer.classList.add("vh65");
   contentContainer.classList.add("displayFlex");
   contentContainer.innerHTML = "";
   return contentContainer;
 }
 
-
-
 function backButtonHandler() {
   const contentContainer = document.querySelector('.content');
-  contentContainer.classList.remove('vh100');
+  contentContainer.classList.remove('vh65');
   contentContainer.innerHTML = '';
   const pokemonDataInLocalStorage = localStorage.getItem('pokemonData');
   if (pokemonDataInLocalStorage) {
@@ -271,14 +229,10 @@ function backButtonHandler() {
   contentContainer.classList.remove('open-stats');  // Remove the class "open-stats" from the container "content."
 }
 
-
-
 async function fetchAndDisplayPrices(id, newCard) {
   const prices = await fetchPrices(id);
   displayPrices(newCard, prices);
 }
-
-
 
 async function fetchPrices(id) {
   try {
@@ -293,14 +247,10 @@ async function fetchPrices(id) {
   }
 }
 
-
-
 function displayPrices(newCard, prices) {
   if (prices) generatePrices(newCard, prices);
   else newCard.innerHTML = "<p>Prices not available for this Pokemon.</p>";
 }
-
-
 
 function generatePrices(newCard, prices) {
   generatePricesHTML(newCard, prices);
@@ -310,8 +260,6 @@ function generatePrices(newCard, prices) {
   const chartOptions = loadChartOptions;  
   drawPricesChart(canvas, chartData, chartOptions);
 }
-
-
 
 function LoadChartData(prices) {
   return {
@@ -328,15 +276,11 @@ function LoadChartData(prices) {
   };
 }
 
-
-
 function checkPricesDirectLow(prices, newCard) {
   if (prices.directLow !== null) {
     newCard.innerHTML += `<p>Direct Low: $${prices.directLow}</p>`;
   }
 }
-
-
 
 function createCanvas(newCard) {
   const canvas = document.createElement('canvas'); // Create a canvas element for the bar chart
@@ -345,8 +289,6 @@ function createCanvas(newCard) {
   newCard.appendChild(canvas);
   return canvas;
 }
-
-
 
 function generatePricesHTML(newCard, prices) {
   newCard.innerHTML += `
@@ -358,8 +300,6 @@ function generatePricesHTML(newCard, prices) {
   `;
 }
 
-
-
 function drawPricesChart(canvas, chartData, chartOptions) {
   new Chart(canvas, {
     type: 'bar',
@@ -367,8 +307,6 @@ function drawPricesChart(canvas, chartData, chartOptions) {
     options: chartOptions
   });
 }
-
-
 
 async function searchPokemon() {
   const searchInput = document.getElementById("searchInputID");
@@ -382,8 +320,6 @@ async function searchPokemon() {
   await cheackIfPokemonFind(apiUrl);
   stopLoadingAnimation();
 }
-
-
 
 async function cheackIfPokemonFind(apiUrl) {
   try {
@@ -400,8 +336,6 @@ async function cheackIfPokemonFind(apiUrl) {
   }
 }
 
-
-
 function displaySearchedPokemon(pokemon) {
   const enlargedCardContainer = createEnlargedContainerForSearchedPokemon();
   const enlargedCard = createLargedCardForSearchedPokemon(pokemon, enlargedCardContainer);
@@ -411,8 +345,6 @@ function displaySearchedPokemon(pokemon) {
   document.querySelector("body").appendChild(enlargedCardContainer);
 }
 
-
-
 function checkEnlargedContainerClicked(enlargedCardContainer, enlargedCard) {
   enlargedCardContainer.addEventListener("click", (event) => {
     if (!enlargedCard.contains(event.target)) {
@@ -420,8 +352,6 @@ function checkEnlargedContainerClicked(enlargedCardContainer, enlargedCard) {
     }
   });
 }
-
-
 
 function checkPricesButtonClicked(PricesButton, pokemon) {
   let pricesButtonClicked = false;
@@ -433,8 +363,6 @@ function checkPricesButtonClicked(PricesButton, pokemon) {
   });
 }
 
-
-
 function createPricesButtonForSearchedPokemon(enlargedCardContainer) {
   const PricesButton = document.createElement("button");
   PricesButton.innerText = "Prices";
@@ -444,16 +372,12 @@ function createPricesButtonForSearchedPokemon(enlargedCardContainer) {
   return PricesButton;
 }
 
-
-
 function createEnlargedContainerForSearchedPokemon() {
   const enlargedCardContainer = document.createElement("div");
   enlargedCardContainer.classList.add("enlarged-card-container");
   enlargedCardContainer.classList.add("displayFlex");
   return enlargedCardContainer;
 }
-
-
 
 function createLargedCardForSearchedPokemon(pokemon, enlargedCardContainer) {
   const enlargedCard = document.createElement("div");
@@ -462,8 +386,6 @@ function createLargedCardForSearchedPokemon(pokemon, enlargedCardContainer) {
   enlargedCardContainer.appendChild(enlargedCard);
   return enlargedCard;
 }
-
-
 
 function loadingAnimation() {
   const searchButton = document.getElementById('search-buttonID');  
@@ -474,16 +396,12 @@ function loadingAnimation() {
   }
 }
 
-
-
 function stopLoadingAnimation() {
   const searchButton = document.getElementById('search-buttonID');
   searchButton.classList.remove('loading');
   searchButton.innerHTML = '<span class="icon">&#128269;</span>Search';
   isLoading = false;
 }
-
-
 
 function loadingAnimationMorePokemon() {
   const searchButton = document.getElementById('morePokemonsID');  
@@ -494,16 +412,12 @@ function loadingAnimationMorePokemon() {
   }
 }
 
-
-
 function stopLoadingAnimationMorePokemon() {
   const searchButton = document.getElementById('morePokemonsID');
   searchButton.classList.remove('loading');
   searchButton.innerHTML = '<span class="icon">&#128269;</span>More Pokemons';
   isLoading = false;
 }
-
-
 
 function showPreviousPokemonSingleCard() {
   const cardsContainer = document.querySelector('.content');
@@ -513,8 +427,6 @@ function showPreviousPokemonSingleCard() {
   const previousCard = allCards[previousIndex];
   handleCardClick(previousCard); // Show the previous card using the existing handleCardClick function
 }
-
-
 
 function showNextPokemonSingleCard() {
   const cardsContainer = document.querySelector('.content');
