@@ -208,7 +208,7 @@ function createNewCard(contentContainer) {
 function createContentContainer() {
   const contentContainer = document.querySelector(".content");
   contentContainer.classList.add("open-stats"); // Add the class "open-stats" to remove the background image
-  contentContainer.classList.add("vh65");
+  contentContainer.classList.add("v65");
   contentContainer.classList.add("displayFlex");
   contentContainer.innerHTML = "";
   return contentContainer;

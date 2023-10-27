@@ -7,10 +7,10 @@
 /* Body */
 body {
   margin: 0;
-  height: 100vh;
+  /*height: 100vh;*/
   font-family: "Heebo-Regular", sans-serif;
   color: white;
-  background: white;
+  background-color: #4979c9;
 }
 
 /* Header */
@@ -255,6 +255,7 @@ footer {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 20px;
   background-color: #4979c9;
   gap: 20px;
   padding-left: 10px;
@@ -399,9 +400,15 @@ footer {
   }
 
   .card {
-    width: 250px; 
-    height: 350px;
+    width: 250px;    
   }
+
+  .searchSection {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
 }
 
 
