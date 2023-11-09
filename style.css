@@ -249,7 +249,6 @@ header {
   animation: spin 2s linear infinite;
 }
 
-
 /* Footer */
 footer {
   display: flex;
@@ -285,7 +284,6 @@ footer {
   background-color: rgb(185, 184, 184);
 }
 
-
 /* Generel classes */
 .displayFlex {
   display: flex;
@@ -301,7 +299,6 @@ footer {
   color: black;
 }
 
-
 /*Remove the background image from .card:after if the "open-stats" class is present */
 .open-stats .card:after {
   background-image: none;
@@ -310,7 +307,6 @@ footer {
 .open-stats .card:hover:before {
   opacity: 0;
 }
-
 
 /* Loading screen styles */
 .loading-screen {
@@ -334,9 +330,7 @@ footer {
   color: #211799;
 }
 
-
 /* Animations */
-
 /* StarSparkle animation */
 @keyframes starSparkle {
   0%,
@@ -391,7 +385,6 @@ footer {
   
 }
 
-
 /* Responsive */
 @media (max-width: 600px) {
   .enlarged-card {
@@ -410,9 +403,6 @@ footer {
     gap: 15px;
 }
 }
-
-
-
 
 /* Ändern der Farbe des Scrollbalkens */
 ::-webkit-scrollbar {
