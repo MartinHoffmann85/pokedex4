@@ -1,4 +1,4 @@
-var VanillaTilt = (function () {
+let VanillaTilt = (function () {
     'use strict';
     class VanillaTilt {  // Created by Sergiu Șandor (micku7zu) on 1/27/2017. Original idea: https://github.com/gijsroge/tilt.js MIT License. Version 1.8.0 
       constructor(element, settings = {}) {
@@ -359,7 +359,7 @@ var VanillaTilt = (function () {
           gyroscopeSamples: 10
         };    
         let newSettings = {};
-        for (var property in defaultSettings) {
+        for (let property in defaultSettings) {
           if (property in settings) {
             newSettings[property] = settings[property];
           } else if (this.element.hasAttribute("data-tilt-" + property)) {
