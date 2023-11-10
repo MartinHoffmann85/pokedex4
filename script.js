@@ -325,24 +325,28 @@ async function cheackIfPokemonFind(apiUrl) {
   try {
     const response = await fetch(apiUrl);
     const data = await response.json();
-    const foundPokemon = data.data[0]; // We'll take the first found Pokémon, if available
-    if (foundPokemon) {
-      displaySearchedPokemon(foundPokemon);
-    } else { // Display a message if the requested Pokémon was not found      
+    const foundPokemonList = data.data; // Eine Liste aller gefundenen Pokémon
+    if (foundPokemonList && foundPokemonList.length > 0) {
+      displaySearchedPokemons(foundPokemonList);
+    } else {
       alert("Pokémon not found!");
     }
-  } catch (error) {    
+  } catch (error) {
     alert("Please insert Pokemon name here.");
   }
 }
 
-function displaySearchedPokemon(pokemon) {
-  const enlargedCardContainer = createEnlargedContainerForSearchedPokemon();
-  const enlargedCard = createLargedCardForSearchedPokemon(pokemon, enlargedCardContainer);
-  const PricesButton = createPricesButtonForSearchedPokemon(enlargedCardContainer);
-  checkPricesButtonClicked(PricesButton, pokemon);
-  checkEnlargedContainerClicked(enlargedCardContainer, enlargedCard);
-  document.querySelector("body").appendChild(enlargedCardContainer);
+function displaySearchedPokemons(pokemonList) {
+  const container = document.querySelector('.content');
+  container.innerHTML = ''; // Leere den Container, um die neuen Ergebnisse anzuzeigen
+  pokemonList.forEach((pokemon) => {
+    const enlargedCardContainer = createEnlargedContainerForSearchedPokemon();
+    const enlargedCard = createLargedCardForSearchedPokemon(pokemon, enlargedCardContainer);
+    const PricesButton = createPricesButtonForSearchedPokemon(enlargedCardContainer);
+    checkPricesButtonClicked(PricesButton, pokemon);
+    checkEnlargedContainerClicked(enlargedCardContainer, enlargedCard);
+    container.appendChild(enlargedCardContainer);
+  });
 }
 
 function checkEnlargedContainerClicked(enlargedCardContainer, enlargedCard) {
