@@ -338,15 +338,19 @@ async function cheackIfPokemonFind(apiUrl) {
 
 function displaySearchedPokemons(pokemonList) {
   const container = document.querySelector('.content');
-  container.innerHTML = ''; // Leere den Container, um die neuen Ergebnisse anzuzeigen
+  container.innerHTML = '';  // Leere den Container, um die neuen Ergebnisse anzuzeigen  
+  const allPokemonContainer = document.createElement('div');  // Erstelle einen Container für alle gefundenen Pokémon
+  allPokemonContainer.classList.add('all-pokemon-container');  
   pokemonList.forEach((pokemon) => {
-    const enlargedCardContainer = createEnlargedContainerForSearchedPokemon();
+    const enlargedCardContainer = createEnlargedContainerForSearchedPokemon();  // Für jedes Pokémon erstelle einen einzelnen Container
     const enlargedCard = createLargedCardForSearchedPokemon(pokemon, enlargedCardContainer);
     const PricesButton = createPricesButtonForSearchedPokemon(enlargedCardContainer);
     checkPricesButtonClicked(PricesButton, pokemon);
-    checkEnlargedContainerClicked(enlargedCardContainer, enlargedCard);
-    container.appendChild(enlargedCardContainer);
-  });
+    checkEnlargedContainerClicked(enlargedCardContainer, enlargedCard);    
+    allPokemonContainer.appendChild(enlargedCardContainer);  // Füge den einzelnen Container dem Container für alle Pokémon hinzu
+  });  
+  container.appendChild(allPokemonContainer);  // Füge den Container für alle gefundenen Pokémon dem Hauptcontainer hinzu
+  stopLoadingAnimation();
 }
 
 function checkEnlargedContainerClicked(enlargedCardContainer, enlargedCard) {
@@ -377,15 +381,14 @@ function createPricesButtonForSearchedPokemon(enlargedCardContainer) {
 }
 
 function createEnlargedContainerForSearchedPokemon() {
-  const enlargedCardContainer = document.createElement("div");
-  enlargedCardContainer.classList.add("enlarged-card-container");
+  const enlargedCardContainer = document.createElement("div");  
   enlargedCardContainer.classList.add("displayFlex");
   return enlargedCardContainer;
 }
 
 function createLargedCardForSearchedPokemon(pokemon, enlargedCardContainer) {
   const enlargedCard = document.createElement("div");
-  enlargedCard.classList.add("enlarged-card");
+  enlargedCard.classList.add("card");
   enlargedCard.style.backgroundImage = `url(${pokemon.images.large})`;
   enlargedCardContainer.appendChild(enlargedCard);
   return enlargedCard;

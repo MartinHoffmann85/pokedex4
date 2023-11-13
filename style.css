@@ -150,6 +150,12 @@ header {
   z-index: 999; /* Place the container on top of everything else */  
 }
 
+.enlarged-card-container-for-searched-pokemon {
+  width: 100%;
+  height: 100%;  
+  background-color: rgba(0, 0, 0, 0.9); /* Background color with some transparency */  
+}
+
 .enlarged-card {
   width: 500px; /* Adjust the width as needed */
   height: 700px; /* Adjust the height as needed */
@@ -160,6 +166,11 @@ header {
   border-radius: 15px;
   box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.7);
   cursor: pointer;
+}
+
+.all-pokemon-container {
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .no-animation {
