@@ -216,22 +216,28 @@ function createContentContainer() {
 }
 
 function backButtonHandler() {
-  const contentContainer = document.querySelector('.content');
+  const contentContainer = document.querySelector('.content');  
   const morePokemonsButton = document.getElementById('morePokemonsID');  // Sichtbarkeit des Buttons mit der ID "morePokemonsID" ändern
   if (morePokemonsButton) {
     morePokemonsButton.style.display = 'inline-block'; // oder 'inline', 'inline-block', je nach Bedarf
-  }
-  contentContainer.classList.remove('vh65');
+  }  
   contentContainer.innerHTML = '';
+  contentContainer.classList.remove('vh65');    
+  contentContainer.classList.remove('displayFlex'); // Remove the class "displayFlex" from the container "content."
+  contentContainer.classList.remove('open-stats');  // Remove the class "open-stats" from the container "content."
+  ifPokemonDataInLocalSorage(contentContainer);
+}
+
+
+
+function ifPokemonDataInLocalSorage(contentContainer) {
   const pokemonDataInLocalStorage = localStorage.getItem('pokemonData');
   if (pokemonDataInLocalStorage) {
     const pokemonData = JSON.parse(pokemonDataInLocalStorage);
     displayPokemonImages(pokemonData, contentContainer);
   } else {
-    fetchAndDisplayPokemonImage();    
-  }    
-  contentContainer.classList.remove('displayFlex'); // Remove the class "displayFlex" from the container "content."
-  contentContainer.classList.remove('open-stats');  // Remove the class "open-stats" from the container "content."
+    fetchAndDisplayPokemonImage();
+  }
 }
 
 async function fetchAndDisplayPrices(id, newCard) {
@@ -371,18 +377,6 @@ function forEachSearchedPokemon(cardsContainer, foundPokemonList) {
   });
 }
 
-function checkEnlargedContainerClicked(enlargedCardContainer, enlargedCard) {
-  enlargedCardContainer.addEventListener("click", (event) => {
-    if (!enlargedCard.contains(event.target)) {
-        let card = enlargedCard
-        handleCardClick(card);      
-        enlargedCardContainer.appendChild(card);
-      vanillaTiltFunction(card);
-    };
-    })
-  }
-
-
 function checkPricesButtonClicked(PricesButton, pokemon) {
   let pricesButtonClicked = false;
   PricesButton.addEventListener("click", () => {
@@ -402,17 +396,5 @@ function createPricesButtonForSearchedPokemon(enlargedCardContainer) {
   return PricesButton;
 }
 
-function createEnlargedContainerForSearchedPokemon() {
-  const enlargedCardContainer = document.createElement("div");  
-  enlargedCardContainer.classList.add("displayFlex");
-  return enlargedCardContainer;
-}
 
-function createLargedCardForSearchedPokemon(pokemon, enlargedCardContainer) {
-  const enlargedCard = document.createElement("div");
-  enlargedCard.classList.add("card");
-  enlargedCard.style.backgroundImage = `url(${pokemon.images.large})`;
-  enlargedCardContainer.appendChild(enlargedCard);
-  return enlargedCard;
-}
 
