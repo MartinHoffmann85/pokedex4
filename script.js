@@ -336,30 +336,34 @@ async function cheackIfPokemonFind(apiUrl) {
   }
 }
 
-function displaySearchedPokemons(pokemonList) {
-  const container = document.querySelector('.content');
-  container.innerHTML = '';  // Leere den Container, um die neuen Ergebnisse anzuzeigen  
-  const allPokemonContainer = document.createElement('div');  // Erstelle einen Container für alle gefundenen Pokémon
-  allPokemonContainer.classList.add('all-pokemon-container');  
-  pokemonList.forEach((pokemon) => {
-    const enlargedCardContainer = createEnlargedContainerForSearchedPokemon();  // Für jedes Pokémon erstelle einen einzelnen Container
-    const enlargedCard = createLargedCardForSearchedPokemon(pokemon, enlargedCardContainer);
-    const PricesButton = createPricesButtonForSearchedPokemon(enlargedCardContainer);
-    checkPricesButtonClicked(PricesButton, pokemon);
-    checkEnlargedContainerClicked(enlargedCardContainer, enlargedCard);    
-    allPokemonContainer.appendChild(enlargedCardContainer);  // Füge den einzelnen Container dem Container für alle Pokémon hinzu
-  });  
-  container.appendChild(allPokemonContainer);  // Füge den Container für alle gefundenen Pokémon dem Hauptcontainer hinzu
+function displaySearchedPokemons(foundPokemonList) {
+  const cardsContainer = document.querySelector('.content');
+  cardsContainer.innerHTML = '';  // Clear the container to display the new results
+  foundPokemonList.forEach((pokemon) => {
+    const card = document.createElement('div');
+    card.classList.add("card");
+    card.style.backgroundImage = `url(${pokemon.images.large})`;  
+    card.dataset.pokemonId = pokemon.id; // Add the Pokemon ID to the card's dataset
+    card.addEventListener("click", () => {
+      handleCardClick(card);
+    });
+    cardsContainer.appendChild(card);
+    vanillaTiltFunction(card);
+  });
   stopLoadingAnimation();
 }
 
 function checkEnlargedContainerClicked(enlargedCardContainer, enlargedCard) {
   enlargedCardContainer.addEventListener("click", (event) => {
     if (!enlargedCard.contains(event.target)) {
-      enlargedCardContainer.remove();
-    }
-  });
-}
+        let card = enlargedCard
+        handleCardClick(card);      
+        enlargedCardContainer.appendChild(card);
+      vanillaTiltFunction(card);
+    };
+    })
+  }
+
 
 function checkPricesButtonClicked(PricesButton, pokemon) {
   let pricesButtonClicked = false;
