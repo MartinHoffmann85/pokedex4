@@ -319,17 +319,30 @@ function drawPricesChart(canvas, chartData, chartOptions) {
   });
 }
 
-async function searchPokemon() {
+function setupSearch() {
+  const searchForm = document.getElementById("searchForm");
   const searchInput = document.getElementById("searchInputID");
-  const searchTerm = searchInput.value.toLowerCase().trim();  
-  if (searchTerm.length < 3) {
-    alert("Der Suchbegriff muss mindestens 3 Zeichen lang sein.");
-    return;
+
+  // Funktion für die Suche nach Pokemon
+  async function searchPokemon() {
+    const searchTerm = searchInput.value.toLowerCase().trim();
+
+    if (searchTerm.length < 3) {
+      alert("Der Suchbegriff muss mindestens 3 Zeichen lang sein.");
+      return;
+    }
+
+    const apiUrl = `https://api.pokemontcg.io/v2/cards?q=name:*${searchTerm}*`;
+    loadingAnimation();
+    await cheackIfPokemonFind(apiUrl);
+    stopLoadingAnimation();
   }
-    const apiUrl = `https://api.pokemontcg.io/v2/cards?q=name:*${searchTerm}*`;  
-  loadingAnimation();
-  await cheackIfPokemonFind(apiUrl);
-  stopLoadingAnimation();
+
+  // Event-Listener für das Absenden des Formulars
+  searchForm.addEventListener("submit", (event) => {
+    event.preventDefault(); // Verhindere das Standardverhalten des Formulars (z. B. Neuladen der Seite)
+    searchPokemon();
+  });
 }
 
 async function cheackIfPokemonFind(apiUrl) {
