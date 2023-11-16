@@ -302,6 +302,10 @@ footer {
   align-items: center;
 }
 
+.back-button-with-margin {
+  margin: 50px;
+}
+
 .vh65 {
     height: 65vh;
 }

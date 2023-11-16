@@ -191,6 +191,7 @@ function createBackButton(contentContainer) {
   backButton.classList.add("back-button");
   contentContainer.appendChild(backButton);
   backButton.addEventListener("click", backButtonHandler);
+  return contentContainer;
 }
 
 function createNewCard(contentContainer) {
@@ -349,9 +350,14 @@ function displaySearchedPokemons(foundPokemonList) {
     });
     cardsContainer.appendChild(card);
     vanillaTiltFunction(card);
-  });
-  stopLoadingAnimation();
-}
+  });  
+  const backButtonContainer = createBackButton(document.createElement('div')); // Add the back button at the end  
+    cardsContainer.appendChild(backButtonContainer);    
+    const backButton = backButtonContainer.querySelector('.back-button');  // Hole den Back-Button aus dem Container und setze die Klasse mit Margin
+    backButton.classList.add('back-button-with-margin');
+    stopLoadingAnimation();
+  }
+
 
 function checkEnlargedContainerClicked(enlargedCardContainer, enlargedCard) {
   enlargedCardContainer.addEventListener("click", (event) => {
