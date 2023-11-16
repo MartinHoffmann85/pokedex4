@@ -190,7 +190,7 @@ function createBackButton(contentContainer) {
   backButton.innerText = "Back";
   backButton.classList.add("back-button");
   contentContainer.appendChild(backButton);
-  backButton.addEventListener("click", backButtonHandler);
+  backButton.addEventListener("click", backButtonHandler);  
   return contentContainer;
 }
 
@@ -217,6 +217,10 @@ function createContentContainer() {
 
 function backButtonHandler() {
   const contentContainer = document.querySelector('.content');
+  const morePokemonsButton = document.getElementById('morePokemonsID');  // Sichtbarkeit des Buttons mit der ID "morePokemonsID" ändern
+  if (morePokemonsButton) {
+    morePokemonsButton.style.display = 'inline-block'; // oder 'inline', 'inline-block', je nach Bedarf
+  }
   contentContainer.classList.remove('vh65');
   contentContainer.innerHTML = '';
   const pokemonDataInLocalStorage = localStorage.getItem('pokemonData');
@@ -339,25 +343,33 @@ async function cheackIfPokemonFind(apiUrl) {
 
 function displaySearchedPokemons(foundPokemonList) {
   const cardsContainer = document.querySelector('.content');
-  cardsContainer.innerHTML = '';  // Clear the container to display the new results
+  forEachSearchedPokemon(cardsContainer, foundPokemonList);  
+  const backButtonContainer = createBackButton(document.createElement('div')); // Add the back button at the end  
+    cardsContainer.appendChild(backButtonContainer);    
+    const backButton = backButtonContainer.querySelector('.back-button');  // Get the Back-Button at the Container and set the class with Margin
+    backButton.classList.add('back-button-with-margin');  
+  const morePokemonsButton = document.getElementById('morePokemonsID');  // Hide the Button with ID "morePokemonsID"
+  if (morePokemonsButton) {
+    morePokemonsButton.style.display = 'none';
+  }
+    stopLoadingAnimation();
+  }
+
+
+function forEachSearchedPokemon(cardsContainer, foundPokemonList) {
+  cardsContainer.innerHTML = ''; // Clear the container to display the new results
   foundPokemonList.forEach((pokemon) => {
     const card = document.createElement('div');
     card.classList.add("card");
-    card.style.backgroundImage = `url(${pokemon.images.large})`;  
+    card.style.backgroundImage = `url(${pokemon.images.large})`;
     card.dataset.pokemonId = pokemon.id; // Add the Pokemon ID to the card's dataset
     card.addEventListener("click", () => {
       handleCardClick(card);
     });
     cardsContainer.appendChild(card);
     vanillaTiltFunction(card);
-  });  
-  const backButtonContainer = createBackButton(document.createElement('div')); // Add the back button at the end  
-    cardsContainer.appendChild(backButtonContainer);    
-    const backButton = backButtonContainer.querySelector('.back-button');  // Hole den Back-Button aus dem Container und setze die Klasse mit Margin
-    backButton.classList.add('back-button-with-margin');
-    stopLoadingAnimation();
-  }
-
+  });
+}
 
 function checkEnlargedContainerClicked(enlargedCardContainer, enlargedCard) {
   enlargedCardContainer.addEventListener("click", (event) => {
