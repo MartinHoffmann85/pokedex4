@@ -18,10 +18,12 @@ async function init() {
   const loadingScreen = document.getElementById('loadingScreen');
   loadingScreen.style.display = 'block'; // Show the loading screen
   const minimumDuration = 7000; // 7 seconds in milliseconds, Set a minimum duration of 7 seconds
+  const searchInput = document.getElementById("searchInputID");
+  searchInput.addEventListener("keydown", handleKeyPress);
   await fetchPokemonJsonFromUrl(); // Fetch 100 Pokémon data
   setTimeout(() => {
     loadingScreen.style.display = 'none'; // Hide the loading screen once the content is ready
-  }, minimumDuration);
+  }, minimumDuration);  
 }
 
 async function fetchAndDisplayPokemonImage() {  // Function to fetch Pokemon data from the API and display cards with images  
@@ -217,7 +219,7 @@ function createContentContainer() {
 
 function backButtonHandler() {
   const contentContainer = document.querySelector('.content');  
-  const morePokemonsButton = document.getElementById('morePokemonsID');  // Sichtbarkeit des Buttons mit der ID "morePokemonsID" ändern
+  const morePokemonsButton = document.getElementById('morePokemonsID');  // Hide Button with ID "morePokemonsID"
   if (morePokemonsButton) {
     morePokemonsButton.style.display = 'inline-block'; // oder 'inline', 'inline-block', je nach Bedarf
   }  
@@ -227,8 +229,6 @@ function backButtonHandler() {
   contentContainer.classList.remove('open-stats');  // Remove the class "open-stats" from the container "content."
   ifPokemonDataInLocalSorage(contentContainer);
 }
-
-
 
 function ifPokemonDataInLocalSorage(contentContainer) {
   const pokemonDataInLocalStorage = localStorage.getItem('pokemonData');
@@ -319,30 +319,24 @@ function drawPricesChart(canvas, chartData, chartOptions) {
   });
 }
 
-function setupSearch() {
-  const searchForm = document.getElementById("searchForm");
+async function searchPokemon() {
   const searchInput = document.getElementById("searchInputID");
-
-  // Funktion für die Suche nach Pokemon
-  async function searchPokemon() {
-    const searchTerm = searchInput.value.toLowerCase().trim();
-
-    if (searchTerm.length < 3) {
-      alert("Der Suchbegriff muss mindestens 3 Zeichen lang sein.");
-      return;
-    }
-
-    const apiUrl = `https://api.pokemontcg.io/v2/cards?q=name:*${searchTerm}*`;
-    loadingAnimation();
-    await cheackIfPokemonFind(apiUrl);
-    stopLoadingAnimation();
+  const searchTerm = searchInput.value.toLowerCase().trim();
+  if (searchTerm.length < 3) {
+    alert("Der Suchbegriff muss mindestens 3 Zeichen lang sein.");
+    return;
   }
+  const apiUrl = `https://api.pokemontcg.io/v2/cards?q=name:*${searchTerm}*`;
+  loadingAnimation();
+  await cheackIfPokemonFind(apiUrl);
+  stopLoadingAnimation();
+}
 
-  // Event-Listener für das Absenden des Formulars
-  searchForm.addEventListener("submit", (event) => {
-    event.preventDefault(); // Verhindere das Standardverhalten des Formulars (z. B. Neuladen der Seite)
+function handleKeyPress(event) {  // Handle the Enter key press search function
+  if (event.key === 'Enter') {
+    event.preventDefault(); // No standard case for enter form
     searchPokemon();
-  });
+  }
 }
 
 async function cheackIfPokemonFind(apiUrl) {
