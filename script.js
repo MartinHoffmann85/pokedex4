@@ -219,9 +219,11 @@ function createContentContainer() {
 
 function backButtonHandler() {
   const contentContainer = document.querySelector('.content');  
-  const morePokemonsButton = document.getElementById('morePokemonsID');  // Hide Button with ID "morePokemonsID"
+  const morePokemonsButton = document.getElementById('morePokemonsID');  // Show Button with ID "morePokemonsID"
+  const morePokemonsButton2 = document.getElementById('morePokemons2ID');
   if (morePokemonsButton) {
     morePokemonsButton.style.display = 'inline-block'; // oder 'inline', 'inline-block', je nach Bedarf
+    morePokemonsButton2.style.display = 'inline-block';
   }  
   contentContainer.innerHTML = '';
   contentContainer.classList.remove('vh65');    
@@ -362,12 +364,13 @@ function displaySearchedPokemons(foundPokemonList) {
     const backButton = backButtonContainer.querySelector('.back-button');  // Get the Back-Button at the Container and set the class with Margin
     backButton.classList.add('back-button-with-margin');  
   const morePokemonsButton = document.getElementById('morePokemonsID');  // Hide the Button with ID "morePokemonsID"
+  const morePokemonsButton2 = document.getElementById('morePokemons2ID');
   if (morePokemonsButton) {
     morePokemonsButton.style.display = 'none';
+    morePokemonsButton2.style.display = 'none';
   }
     stopLoadingAnimation();
   }
-
 
 function forEachSearchedPokemon(cardsContainer, foundPokemonList) {
   cardsContainer.innerHTML = ''; // Clear the container to display the new results
@@ -384,24 +387,7 @@ function forEachSearchedPokemon(cardsContainer, foundPokemonList) {
   });
 }
 
-function checkPricesButtonClicked(PricesButton, pokemon) {
-  let pricesButtonClicked = false;
-  PricesButton.addEventListener("click", () => {
-    if (!pricesButtonClicked) {
-      pricesButtonClicked = true;
-      openPrices(pokemon);
-    }
-  });
-}
 
-function createPricesButtonForSearchedPokemon(enlargedCardContainer) {
-  const PricesButton = document.createElement("button");
-  PricesButton.innerText = "Prices";
-  PricesButton.classList.add("prices-button");
-  enlargedCardContainer.appendChild(PricesButton);
-  stopLoadingAnimation();
-  return PricesButton;
-}
 
 
 
