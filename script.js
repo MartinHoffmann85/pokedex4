@@ -2,6 +2,7 @@ let clickedPokemonID = null;  // clicked Pokemon ID
 let isLoading = false;
 let startIndex = 0;  // Startindex for loaded Pokemons
 let endIndex = 100;   // Endindex for loaded Pokemons
+let isScrollBarVisible = true; // Initialize to true when the page loads
 
 const loadChartOptions = {
   scales: {
@@ -87,27 +88,38 @@ function vanillaTiltFunction(card) {
 }
 
 function handleCardClick(card) {
-  clickedPokemonID = card.dataset.pokemonId; // Store the clicked Pokemon ID in the global variable
-  const { enlargedCardContainer, enlargedCard } = createEnlargedContainer(card);
+  clickedPokemonID = card.dataset.pokemonId;
+  const { clickCardContainer, enlargedCardContainer, enlargedCard } = createEnlargedContainer(card);
   createButtonsAndHandleClick(enlargedCardContainer);
-  enlargedCardContainer.addEventListener("click", (event) => {
-    if (!enlargedCard.contains(event.target)) {
-      enlargedCardContainer.remove();
+  hideScrollBar(); // Hide the scroll bar when a card is clicked
+
+  function handleClickOutside(event) {
+  if (!enlargedCard.contains(event.target)) {
+    clickCardContainer.remove();
+    
+    // Nur die Scrollbar anzeigen, wenn das Klicken außerhalb des vergrößerten Kartenbereichs erfolgt
+    if (!event.target.classList.contains('prices-button') &&        
+        !event.target.classList.contains('next-button') &&
+        !event.target.classList.contains('previous-button')) {
+      showScrollBar(); // Show the scroll bar when the enlarged card is closed
     }
-  });  
-  document.querySelector("body").appendChild(enlargedCardContainer);
+  }
+}
+
+  clickCardContainer.addEventListener("click", handleClickOutside);
+  document.body.appendChild(clickCardContainer);
 }
 
 function createButtonsAndHandleClick(enlargedCardContainer) {
   const buttonContainer = document.createElement("div");
-  buttonContainer.classList.add("button-container"); // Fügen Sie eine CSS-Klasse für das Flexbox-Layout hinzu
+  buttonContainer.classList.add("button-container"); 
   const previousButton = createPreviousButton(buttonContainer);
   const pricesButton = createPricesButton(buttonContainer);  
   const nextButton = createNextButton(buttonContainer);
-  enlargedCardContainer.appendChild(buttonContainer);
+  enlargedCardContainer.appendChild(buttonContainer);  
   let nextButtonClicked = false;
   let pricesButtonClicked = false;
-  let previousButtonClicked = false;
+  let previousButtonClicked = false;  
   pricesButtonClicked = checkStatsButtonClicked(pricesButton, pricesButtonClicked);
   previousButtonClicked = checkPreviousButtonClicked(previousButton, previousButtonClicked);
   nextButtonClicked = checkNextButtonClicked(nextButton, nextButtonClicked);
@@ -127,7 +139,7 @@ function checkPreviousButtonClicked(previousButton, previousButtonClicked) {
   previousButton.addEventListener("click", () => {
     if (!previousButtonClicked) {
       previousButtonClicked = true;
-      showPreviousPokemonSingleCard();
+      showPreviousPokemonSingleCard();      
     }
   });
   return previousButtonClicked;
@@ -136,24 +148,31 @@ function checkPreviousButtonClicked(previousButton, previousButtonClicked) {
 function checkNextButtonClicked(nextButton, nextButtonClicked) {
   nextButton.addEventListener("click", () => {
     if (!nextButtonClicked) {
-      nextButtonClicked = true;
-      showNextPokemonSingleCard();
+      nextButtonClicked = true;      
+      showNextPokemonSingleCard();      
     }
   });
   return nextButtonClicked;
 }
 
 function createEnlargedContainer(card) {
+  const clickCardContainer = document.createElement("div");
+  clickCardContainer.classList.add("clickCardContainer");
+
   const enlargedCardContainer = document.createElement("div");
   enlargedCardContainer.classList.add("enlarged-card-container");
   enlargedCardContainer.classList.add("displayFlex");
+
   const enlargedCard = card.cloneNode(true);
   enlargedCard.classList.add("enlarged-card");
   enlargedCard.classList.remove("active");
-  enlargedCard.classList.add("no-animation"); // Add the no-animation class to prevent animations
-  enlargedCard.classList.remove("starSparkle"); // Remove the starSparkle class to prevent the animation
-  enlargedCardContainer.appendChild(enlargedCard);
-  return { enlargedCardContainer, enlargedCard };
+  enlargedCard.classList.add("no-animation");
+  enlargedCard.classList.remove("starSparkle");
+
+  enlargedCardContainer.appendChild(enlargedCard);  
+  clickCardContainer.appendChild(enlargedCardContainer);
+
+  return { clickCardContainer, enlargedCardContainer, enlargedCard };
 }
 
 function createPricesButton(enlargedCardContainer) {
@@ -221,6 +240,7 @@ function backButtonHandler() {
   const contentContainer = document.querySelector('.content');  
   const morePokemonsButton = document.getElementById('morePokemonsID');  // Show Button with ID "morePokemonsID"
   const morePokemonsButton2 = document.getElementById('morePokemons2ID');
+  showScrollBar();
   if (morePokemonsButton) {
     morePokemonsButton.style.display = 'inline-block'; // oder 'inline', 'inline-block', je nach Bedarf
     morePokemonsButton2.style.display = 'inline-block';

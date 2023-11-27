@@ -36,22 +36,22 @@ function loadingAnimation() {
     isLoading = false;
   }
   
-  function showPreviousPokemonSingleCard() {
+  function showPreviousPokemonSingleCard() {    
     const cardsContainer = document.querySelector('.content');
     const allCards = Array.from(cardsContainer.querySelectorAll('.card'));  
-    const currentIndex = allCards.findIndex(card => card.dataset.pokemonId === clickedPokemonID);  // Find the index of the clicked card in the array  
-    const previousIndex = (currentIndex - 1 + allCards.length) % allCards.length;  // Calculate the previous index in a circular manner
-    const previousCard = allCards[previousIndex];
-    handleCardClick(previousCard); // Show the previous card using the existing handleCardClick function
+    const currentIndex = allCards.findIndex(card => card.dataset.pokemonId === clickedPokemonID);  
+    const previousIndex = (currentIndex - 1 + allCards.length) % allCards.length;
+    const previousCard = allCards[previousIndex];    
+    handleCardClick(previousCard);    
   }
   
-  function showNextPokemonSingleCard() {
+  async function showNextPokemonSingleCard() {    
     const cardsContainer = document.querySelector('.content');
     const allCards = Array.from(cardsContainer.querySelectorAll('.card'));  
-    const currentIndex = allCards.findIndex(card => card.dataset.pokemonId === clickedPokemonID);  // Find the index of the clicked card in the array  
-    const nextIndex = (currentIndex + 1) % allCards.length;  // Calculate the next index in a circular manner
-    const nextCard = allCards[nextIndex];
-    handleCardClick(nextCard); // Show the next card using the existing handleCardClick function
+    const currentIndex = allCards.findIndex(card => card.dataset.pokemonId === clickedPokemonID);
+    const nextIndex = (currentIndex + 1) % allCards.length;
+    const nextCard = allCards[nextIndex];    
+    handleCardClick(nextCard);    
   }
 
   function checkPricesButtonClicked(PricesButton, pokemon) {
@@ -71,4 +71,14 @@ function loadingAnimation() {
     enlargedCardContainer.appendChild(PricesButton);
     stopLoadingAnimation();
     return PricesButton;
+  }
+
+  function showScrollBar() {
+    isScrollBarVisible = true;
+    document.body.style.overflow = 'auto'; // Show scroll bar
+  }
+  
+  function hideScrollBar() {
+    isScrollBarVisible = false;
+    document.body.style.overflow = 'hidden'; // Hide scroll bar
   }

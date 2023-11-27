@@ -126,16 +126,6 @@ header {
 }
 
 /* At Single Image  */
-.blurred-background {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  backdrop-filter: blur(20%); /* Apply the blur effect */
-  z-index: 1; /* Place the blurred background behind the active card */
-}
-
 .enlarged-card-container {
   position: fixed;
   top: 0;
@@ -209,6 +199,7 @@ header {
   cursor: pointer;
   outline: none;
   text-decoration: none;
+  margin-top: 20px;
 }
 
 .back-button:hover {
@@ -314,6 +305,14 @@ footer {
 
 .colorBlack {
   color: black;
+}
+
+.no-scroll {
+  overflow: hidden;  
+}
+
+.scroll {
+  overflow: visible;
 }
 
 /*Remove the background image from .card:after if the "open-stats" class is present */
